@@ -109,6 +109,50 @@ monte-carlo methods for the purpose of numerical integration.</p>
 <h1 id="monte-carlo-methods">Monte-Carlo methods</h1>
 <p>Here, we shall test the various algorithms for numerical integration
 and check their labour ratio.</p>
+<h2 id="hit-and-miss">Hit and Miss</h2>
+<p>The crude method is the simplest and most inefficient monte-carlo
+algorithm. It simply involves generating uniformly distributed random
+points inside the unit square and counting the ratio of those points
+that lie within the quarter circle. This gives us the ratio of the area
+of the square and the circle. Since the are of the unit square is 1, the
+are of the circle can be deduced directly.</p>
+<p><img src="../figures/hit_and_miss_sampling.png" /></p>
+<p>The algorithm involves simply generating uniformly distributed set of
+points within the range (0-1). The estimator for the</p>
+<h3 id="code">Code</h3>
+<ol type="1">
+<li><p>Functions</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> hit_or_miss(p):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    (x, y) <span class="op">=</span> p</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> np.sqrt(x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span>) <span class="op">&gt;</span> <span class="dv">1</span>:</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span>(<span class="dv">0</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span>(<span class="dv">1</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> hit_or_miss_var(inp):</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    (x, meanpi) <span class="op">=</span> inp</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>((x<span class="op">-</span>meanpi)<span class="op">**</span><span class="dv">2</span>)</span></code></pre></div></li>
+<li><p>Simulation</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>nb<span class="op">=</span><span class="dv">22</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>corrlen<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>npoints<span class="op">=</span>(<span class="dv">1</span> <span class="op">&lt;&lt;</span> nb )</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>npointsall<span class="op">=</span>(<span class="dv">1</span> <span class="op">&lt;&lt;</span> nb ) <span class="op">+</span> corrlen</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>randvalsx <span class="op">=</span> np.random.rand(npointsall)<span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>randvalsy <span class="op">=</span> np.random.rand(npointsall)<span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>pivalslist<span class="op">=</span>np.zeros(npointsall)<span class="op">;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate via MC simul</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>meanpi <span class="op">=</span> st.mean(<span class="bu">map</span>(hit_or_miss, <span class="bu">zip</span>(randvalsx,randvalsy)))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>pivals <span class="op">=</span> <span class="bu">map</span>(hit_or_miss, <span class="bu">zip</span>(randvalsx,randvalsy))</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>meanpilist <span class="op">=</span> meanpi<span class="op">*</span>np.ones(npoints)<span class="op">;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>varpivals <span class="op">=</span> <span class="bu">map</span>(hit_or_miss_var, <span class="bu">zip</span>(pivals,meanpilist))</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>errorpi<span class="op">=</span>np.sqrt(<span class="bu">sum</span>(varpivals)<span class="op">/</span>(npoints<span class="op">-</span><span class="dv">1</span>))<span class="op">/</span>np.sqrt(npoints)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># π</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>exactI<span class="op">=</span>np.pi<span class="op">/</span><span class="dv">4</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;meanpi = </span><span class="sc">{</span>meanpi<span class="sc">}</span><span class="ss"> exact=</span><span class="sc">{</span>exactI<span class="sc">}</span><span class="ss"> </span><span class="ch">\n</span><span class="ss"> error=</span><span class="sc">{</span>errorpi<span class="sc">}</span><span class="ss"> errorExact=</span><span class="sc">{</span>exactI<span class="op">-</span>meanpi<span class="sc">}</span><span class="ss">&#39;</span>)</span></code></pre></div></li>
+</ol>
 <h2 id="crude-monte-carlo">Crude monte-carlo</h2>
 <p>The crude method is the simplest and most inefficient monte-carlo
 algorithm. It simply involves generating uniformly distributed random
@@ -118,33 +162,47 @@ of the square and the circle. Since the are of the unit square is 1, the
 are of the circle can be deduced directly.</p>
 <p><img src="../figures/crude_sampling.png" /></p>
 <p>The algorithm involves simply generating uniformly distributed set of
-points within the range (0-1).</p>
-<h2 id="code">Code</h2>
-<h3 id="functions">Functions</h3>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pi_curve(x):</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>(np.sqrt(<span class="fl">1.0</span> <span class="op">-</span> x<span class="op">*</span>x))</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pi_curve_var(inp):</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    (x, meanpi) <span class="op">=</span> inp</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>((x<span class="op">-</span>meanpi)<span class="op">**</span><span class="dv">2</span>)</span></code></pre></div>
-<h3 id="simulation">Simulation</h3>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>nb<span class="op">=</span><span class="dv">24</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>corrlen<span class="op">=</span><span class="dv">0</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>npoints<span class="op">=</span>(<span class="dv">1</span> <span class="op">&lt;&lt;</span> nb )</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>npointsall<span class="op">=</span>(<span class="dv">1</span> <span class="op">&lt;&lt;</span> nb ) <span class="op">+</span> corrlen</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>randvals <span class="op">=</span> np.random.rand(npointsall)<span class="op">;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>pivalslist<span class="op">=</span>np.zeros(npointsall)<span class="op">;</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate via MC simul</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>meanpi <span class="op">=</span> st.mean(<span class="bu">map</span>(pi_curve, randvals))</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>pivals <span class="op">=</span> <span class="bu">map</span>(pi_curve, randvals)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>meanpilist <span class="op">=</span> meanpi<span class="op">*</span>np.ones(npoints)<span class="op">;</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>varpivals <span class="op">=</span> <span class="bu">map</span>(pi_curve_var, <span class="bu">zip</span>(pivals,meanpilist))</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>errorpi<span class="op">=</span>np.sqrt(<span class="bu">sum</span>(varpivals)<span class="op">/</span>(npoints<span class="op">-</span><span class="dv">1</span>))<span class="op">/</span>np.sqrt(npoints)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># π</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>exactI<span class="op">=</span>np.pi<span class="op">/</span><span class="dv">4</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;meanpi = </span><span class="sc">{</span>meanpi<span class="sc">}</span><span class="ss"> exact=</span><span class="sc">{</span>exactI<span class="sc">}</span><span class="ss"> </span><span class="ch">\n</span><span class="ss"> error=</span><span class="sc">{</span>errorpi<span class="sc">}</span><span class="ss"> errorExact=</span><span class="sc">{</span>exactI<span class="op">-</span>meanpi<span class="sc">}</span><span class="ss">&#39;</span>)</span></code></pre></div>
+points within the range (0-1). The estimator for the</p>
+<h3 id="code-1">Code</h3>
+<ol type="1">
+<li><p>Functions</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pi_curve(x):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>(np.sqrt(<span class="fl">1.0</span> <span class="op">-</span> x<span class="op">*</span>x))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pi_curve_var(inp):</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    (x, meanpi) <span class="op">=</span> inp</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>((x<span class="op">-</span>meanpi)<span class="op">**</span><span class="dv">2</span>)</span></code></pre></div></li>
+<li><p>Simulation</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>nb<span class="op">=</span><span class="dv">24</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>corrlen<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>npoints<span class="op">=</span>(<span class="dv">1</span> <span class="op">&lt;&lt;</span> nb )</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>npointsall<span class="op">=</span>(<span class="dv">1</span> <span class="op">&lt;&lt;</span> nb ) <span class="op">+</span> corrlen</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>randvals <span class="op">=</span> np.random.rand(npointsall)<span class="op">;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>pivalslist<span class="op">=</span>np.zeros(npointsall)<span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate via MC simul</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>meanpi <span class="op">=</span> st.mean(<span class="bu">map</span>(pi_curve, randvals))</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>pivals <span class="op">=</span> <span class="bu">map</span>(pi_curve, randvals)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>meanpilist <span class="op">=</span> meanpi<span class="op">*</span>np.ones(npoints)<span class="op">;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>varpivals <span class="op">=</span> <span class="bu">map</span>(pi_curve_var, <span class="bu">zip</span>(pivals,meanpilist))</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>errorpi<span class="op">=</span>np.sqrt(<span class="bu">sum</span>(varpivals)<span class="op">/</span>(npoints<span class="op">-</span><span class="dv">1</span>))<span class="op">/</span>np.sqrt(npoints)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># π</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>exactI<span class="op">=</span>np.pi<span class="op">/</span><span class="dv">4</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;meanpi = </span><span class="sc">{</span>meanpi<span class="sc">}</span><span class="ss"> exact=</span><span class="sc">{</span>exactI<span class="sc">}</span><span class="ss"> </span><span class="ch">\n</span><span class="ss"> error=</span><span class="sc">{</span>errorpi<span class="sc">}</span><span class="ss"> errorExact=</span><span class="sc">{</span>exactI<span class="op">-</span>meanpi<span class="sc">}</span><span class="ss">&#39;</span>)</span></code></pre></div></li>
+</ol>
+<h2 id="stratified-sampling">Stratified sampling</h2>
+<p>Stratified sampling involves breaking up the domain (i.e. 0 - 1) into
+strata and sampling inside individual strata. The estimator for <span
+class="math inline">\(\pi/4\)</span> is then given by the following.</p>
+<p><span class="math display">\[
+\theta = \sum_{j=1}^k \sum_1^{n_j} (\alpha_j -
+\alpha_{j-1})\frac{1}{n_j}f(\alpha_{j-1}+(\alpha_j -
+\alpha_{j-1})\xi_{ij})
+\]</span></p>
+<p>The variance can be smaller than that of crude monte-carlo if
+differences between local means is larger than the variance of <span
+class="math inline">\(f\)</span> within the stata.</p>
 </body>
 </html>
