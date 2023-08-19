@@ -35,9 +35,9 @@ a quarter of the unit circle. Using this and the fact that the
 analytical value of the are of a quarter of the unit circle is
 given as $\pi/4$, we can find the value of $\pi$.
 
-\[
+$$
 \theta = \int_0^1 \sqrt{1-x^2}\ dx = \frac{\pi}{4}
-\]
+$$
 
 #+ATTR_ORG: :width 400
 #+ATTR_LATEX: :width 4in
