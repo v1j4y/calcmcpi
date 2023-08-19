@@ -1,0 +1,29 @@
+:HEADER:
+#+TITLE:     Calculate Pi using monte-carlo methods
+#+AUTHOR: Vijay Gopal Chilkuri
+#+EMAIL: vijay.gopal.c@gmail.com
+#+DATE: <2023-08-19 sam.>
+#+LaTeX_Header: \documentclass[fleqn]{article}
+#+LaTeX_Header: \usepackage{amsmath,amssymb}
+#+LaTeX_Header: \newcommand*\Laplace{\mathop{}\!\mathbin\bigtriangleup}
+#+STARTUP: showall indent latexpreview entitiespretty
+:END:
+
+* Setup :noexport:
+:SETUP:
+#+NAME: importall
+#+begin_src python :session p1 :results silent :noweb yes
+import numpy as np
+from scipy.integrate import odeint
+from scipy import integrate
+from scipy import interpolate
+from scipy.optimize import root_scalar
+import matplotlib.pyplot as plt
+from copy import deepcopy
+#+end_src
+:END:
+
+* Introduction
+:PROPERTIES:
+:header-args:python: :async :session p1
+:END:
