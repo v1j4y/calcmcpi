@@ -14,6 +14,7 @@
 #+NAME: importall
 #+begin_src python :session p1 :results silent :noweb yes
 import numpy as np
+import statistics as st
 from scipy.integrate import odeint
 from scipy import integrate
 from scipy import interpolate
@@ -74,10 +75,33 @@ distributed set of points within the range (0-1).
 
 ** Code
 
+*** Functions
 #+begin_src python :results none
 def pi_curve(x):
-    return((np.exp(x)-1)/(1.718281828459045))
+    return(np.sqrt(1.0 - x*x))
 
-def pi_curve_var(x,meanpi):
+def pi_curve_var(inp):
+    (x, meanpi) = inp
     return((x-meanpi)**2)
+#+end_src
+
+*** Simulation
+#+begin_src python :results none
+nb=24
+corrlen=0
+npoints=(1 << nb )
+npointsall=(1 << nb ) + corrlen
+randvals = np.random.rand(npointsall);
+pivalslist=np.zeros(npointsall);
+
+# Calculate via MC simul
+meanpi = st.mean(map(pi_curve, randvals))
+pivals = map(pi_curve, randvals)
+meanpilist = meanpi*np.ones(npoints);
+varpivals = map(pi_curve_var, zip(pivals,meanpilist))
+errorpi=np.sqrt(sum(varpivals)/(npoints-1))/np.sqrt(npoints)
+# π
+exactI=np.pi/4
+print(f'meanpi = {meanpi} exact={exactI} \n error={errorpi} errorExact={exactI-meanpi}')
+
 #+end_src
