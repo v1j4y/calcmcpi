@@ -84,13 +84,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 id="introduction">Introduction</h1>
 <p>The one dimensional integral that we shall evaluate using monte-carlo methods gives the area of the a quarter of the unit circle. Using this and the fact that the analytical value of the are of a quarter of the unit circle is given as (\pi/4), we can find the value of (\pi).</p>
 <p>[ I = \int_0^1 f(x,y)\ dx = \int_0^1 \sqrt{1-x^2}\ dx = \frac{\pi}{4} ]</p>
-<p><img src="figures/area_quarter_unit_circle.png" /></p>
+<p><img src="/figures/area_quarter_unit_circle.png" /></p>
 <p>The goal is to understand the strengths and weaknesses of the various monte-carlo methods for the purpose of numerical integration.</p>
 <h1 id="monte-carlo-methods">Monte-Carlo methods</h1>
 <p>Here, we shall test the various algorithms for numerical integration and check their labour ratio.</p>
 <h2 id="hit-or-miss">Hit or Miss</h2>
 <p>The crude method is the simplest and most inefficient monte-carlo algorithm. It simply involves generating uniformly distributed random points inside the unit square and counting the ratio of those points that lie within the quarter circle. This gives us the ratio of the area of the square and the circle. Since the are of the unit square is 1, the are of the circle can be deduced directly.</p>
-<p><img src="figures/hit_and_miss_sampling.png" /></p>
+<p><img src="/figures/hit_and_miss_sampling.png" /></p>
 <p>The algorithm involves simply generating uniformly distributed set of points within the range (0-1). The function we want to sample is given as.</p>
 <p>[ \begin{equation} g(x,y) = \left{ \begin{array}{ll} 1 &amp; \mbox{if } \sqrt{1-x^2} \le 1 \ 0 &amp; \mbox{if } \sqrt{1-x^2} &gt; 1 \end{array} \right. \end{equation} ]</p>
 <p>Then the estimator given below is an unbiased estimator for the integral (\theta) for uniformly generated points ((x_i,y_i)) within the unit square ((1,1)).</p>
@@ -135,7 +135,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </code></pre>
 <h2 id="crude-monte-carlo">Crude monte-carlo</h2>
 <p>The crude method is the simplest and most inefficient monte-carlo algorithm. It simply involves generating uniformly distributed random points inside the unit square and counting the ratio of those points that lie within the quarter circle. This gives us the ratio of the area of the square and the circle. Since the are of the unit square is 1, the are of the circle can be deduced directly.</p>
-<p><img src="figures/crude_sampling.png" /></p>
+<p><img src="/figures/crude_sampling.png" /></p>
 <p>The algorithm involves simply generating uniformly distributed set of points within the range (0-1). The estimator for the integral (I) is given below.</p>
 <p>[ \theta = \sum_i^N \frac{f(\xi_i)}{N} ]</p>
 <p>with f being the function given as shown below.</p>
@@ -177,7 +177,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Stratified sampling involves breaking up the domain (i.e. 0 - 1) into strata and sampling inside individual strata. The estimator for (\pi/4) is then given by the following.</p>
 <p>[ \theta = \sum_{j=1}^k \sum_1^{n_j} (\alpha_j - \alpha_{j-1})\frac{1}{n_j}f(\alpha_{j-1}+(\alpha_j - \alpha_{j-1})\xi_{ij}) ]</p>
 <p>The variance can be smaller than that of crude monte-carlo if differences between local means is larger than the variance of (f) within the stata.</p>
-<p><img src="figures/stratified_sampling.png" /></p>
+<p><img src="/figures/stratified_sampling.png" /></p>
 <h3 id="code-2">Code</h3>
 <ol>
 <li><p>Function</p>
@@ -275,7 +275,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>Function</p>
 <div class="RESULTS drawer">
 
-<p><img src="figures/sampling_function.png" /></p>
+<p><img src="/figures/sampling_function.png" /></p>
 </div>
 
 <p>The above figure shows the distribution function that we shall use. There are many points close to (x\approx0) and the points progressively decrease as we approach (x\approx1).</p></li>
