@@ -36,7 +36,7 @@ analytical value of the are of a quarter of the unit circle is
 given as $\pi/4$, we can find the value of $\pi$.
 
 $$
-\theta = \int_0^1 \sqrt{1-x^2}\ dx = \frac{\pi}{4}
+I = \int_0^1 f(x,y)\ dx = \int_0^1 \sqrt{1-x^2}\ dx = \frac{\pi}{4}
 $$
 
 #+ATTR_ORG: :width 400
@@ -55,7 +55,7 @@ numerical integration.
 Here, we shall test the various algorithms for
 numerical integration and check their labour ratio.
 
-** Hit and Miss
+** Hit or Miss
 
 The crude method is the simplest and most inefficient
 monte-carlo algorithm. It simply involves generating
@@ -71,11 +71,30 @@ deduced directly.
 [[../figures/hit_and_miss_sampling.png]]
 
 The algorithm involves simply generating uniformly
-distributed set of points within the range (0-1). The estimator
-for the
+distributed set of points within the range (0-1). The function
+we want to sample is given as.
+
+$$
+\begin{equation}
+g(x,y) =
+\left\{
+  \begin{array}{ll}
+    1  & \mbox{if } \sqrt{1-x^2} \le 1 \\
+    0  & \mbox{if } \sqrt{1-x^2} > 1
+  \end{array}
+\right.
+\end{equation}
+$$
+
+Then the estimator given below is an unbiased estimator for
+the integral $\theta$ for uniformly generated points ($x_i,y_i$) within
+the unit square ($1,1$).
+
+\[
+\theta = \sum_i^N \frac{g(x_i,y_i)}{N}
+\]
 
 *** Code
-
 **** Functions
 #+begin_src python :results none
 def hit_or_miss(p):
@@ -92,7 +111,7 @@ def hit_or_miss_var(inp):
 
 **** Simulation
 #+begin_src python :results none
-nb=22
+nb=24
 corrlen=0
 npoints=(1 << nb )
 npointsall=(1 << nb ) + corrlen
@@ -110,7 +129,13 @@ errorpi=np.sqrt(sum(varpivals)/(npoints-1))/np.sqrt(npoints)
 exactI=np.pi/4
 print(f'meanpi = {meanpi} exact={exactI} \n error={errorpi} errorExact={exactI-meanpi}')
 
+# Results
 #+end_src
+*** Code (Output)
+#+begin_example
+meanpi = 0.785393238067627 exact=0.7853981633974483
+ error=0.00010023175734353169 errorExact=4.9253298213258745e-06
+#+end_example
 
 ** Crude monte-carlo
 
@@ -129,10 +154,21 @@ deduced directly.
 
 The algorithm involves simply generating uniformly
 distributed set of points within the range (0-1). The estimator
-for the
+for the integral $I$ is given below.
+
+\[
+\theta = \sum_i^N \frac{f(\xi_i)}{N}
+\]
+
+with f being the function given as shown below.
+
+\[
+f(x) = \sqrt{1 - x^2}
+\]
+
+and $\xi_i$ is a uniform random number betwee ($0,1$).
 
 *** Code
-
 **** Functions
 #+begin_src python :results none
 def pi_curve(x):
@@ -164,6 +200,13 @@ print(f'meanpi = {meanpi} exact={exactI} \n error={errorpi} errorExact={exactI-m
 
 #+end_src
 
+*** Code (Output)
+#+begin_example
+meanpi = 0.7854022279396252 exact=0.7853981633974483
+ error=5.447856099833516e-05 errorExact=-4.0645421769403e-06
+#+end_example
+
+
 ** Stratified sampling
 :PROPERTIES:
 :header-args:python: :async :session p1
@@ -180,3 +223,195 @@ for $\pi/4$ is then given by the following.
 The variance can be smaller than that of crude monte-carlo if
 differences between local means is larger than the variance of $f$
 within the stata.
+
+
+#+ATTR_ORG: :width 400
+#+ATTR_LATEX: :width 4in
+[[../figures/stratified_sampling.png]]
+
+*** Code
+
+**** Function
+#+begin_src python :results none
+def interval_gen(nint):
+    return(np.linspace(0,1,nint+1))
+
+def strat_rand(x, a, b):
+    return( a + x*(b-a) )
+
+def strat_calc(x,
+                list_npoints_inter,
+                list_sum_inter,
+                list_sum_inter2,
+                list_sum_inter_witha,
+                inter_list):
+    idinter = np.searchsorted(inter_list,x)-1
+    list_npoints_inter[idinter] += 1
+    list_sum_inter[idinter] += (pi_curve(x))
+    δa = inter_list[idinter+1]-inter_list[idinter];
+    list_sum_inter_witha[idinter] += δa * (pi_curve(x))
+    list_sum_inter2[idinter] += pi_curve(x) * pi_curve(x)
+
+def strat_rand_calc(x, a, b,
+                list_npoints_inter,
+                list_sum_inter,
+                list_sum_inter2,
+                list_sum_inter_witha,
+                inter_list):
+    x = ( a + x*(b-a) )
+    idinter = np.searchsorted(inter_list,x)-1
+    list_npoints_inter[idinter] += 1
+    list_sum_inter[idinter] += (pi_curve(x))
+    δa = inter_list[idinter+1]-inter_list[idinter];
+    list_sum_inter_witha[idinter] += δa * (pi_curve(x))
+    list_sum_inter2[idinter] += pi_curve(x) * pi_curve(x)
+
+#+end_src
+**** Simulation
+#+begin_src python :results none
+nb = 10
+npint = 2
+nint = 1 << npint
+corrlen=0
+npoints=(1 << nb )
+npointsall=(1 << nb )
+randvals = np.random.rand(npointsall)
+print(npointsall)
+list_npoints_inter = np.zeros(nint,dtype=int)
+list_sum_inter = np.zeros(nint)
+list_sum_inter2 = np.zeros(nint)
+list_sum_inter_witha = np.zeros(nint)
+inter_list = interval_gen(nint)
+list_mean_inter = np.zeros(nint)
+
+for i in range(nint):
+    step = npointsall >> npint
+    a = inter_list[i]
+    b = inter_list[i+1]
+    [ strat_rand_calc(x, a, b,
+                      list_npoints_inter,
+                      list_sum_inter,
+                      list_sum_inter2,
+                      list_sum_inter_witha,
+                      inter_list) for x in randvals[step*(i):step*(i+1)]]
+
+list_mean_inter = [i/j for i,j in
+                   zip(list_sum_inter_witha,list_npoints_inter)]
+
+meanpi=np.sum(list_mean_inter);
+varpi = 0.0;
+for it in range(nint):
+    δa = inter_list[it+1] - inter_list[it];
+    nit = list_npoints_inter[it]
+    varpi += δa * δa * ( list_sum_inter2[it] - nit * list_mean_inter[it] * list_mean_inter[it] )/(nit * (nit - 1));
+
+errorpi = np.sqrt(varpi)
+exactI=0.4180232931306735
+exactI=np.pi/4
+print(f'meanpi = {meanpi} exact={exactI} \n error={errorpi} errorExact={exactI-meanpi}')
+#+end_src
+
+*** Code (output)
+#+begin_example
+meanpi = 0.7831097344059315 exact=0.7853981633974483
+ error=0.024708860632964468 errorExact=0.002288428991516822
+#+end_example
+
+** Importance sampling
+:PROPERTIES:
+:header-args:python: :async :session p1
+:END:
+
+The natural next step following stratified sampling is that of importance sampling.
+In the previous method, we chose the strata arbitrarily, i.e. by inspection of the
+function to integrate. This was followed by a uniform sampling of points inside
+each strata. The idea is to break the domain into regions which need to be sampled
+with more points as opposed to domains where the function is quasi horizontal (i.e. low variance).
+The more natural way to do this is to adapt the choice of points in a more flexible manner.
+This is the idea behind importance sampling where we define a custom distribution ($g(x)$) which
+is very close to the original function ($f(x)$) that we wish to integrate. The main constarint
+on the distribution is that it needs to be easy to sample from.
+
+
+$$
+\theta = \int_0^1 f(x)\ dx = \int_0^1 \frac{f(x)}{g(x)} g{x}\ dx = \int_0^1 \frac{f(x)}{g(x)} dG(x)
+$$
+
+here, $dG(x)$ is the measure, i.e. the sampling distribution. Note that the
+distribution $g(x)$ must be normalized.
+
+\[
+\int_0^1 g(x)dx = 1
+\]
+
+Invting a distribution,
+
+*** Code
+#+NAME: dressPath
+#+BEGIN_SRC python :session p1 :noweb
+
+# "path" variable must be set by block that
+# expands this org source code block
+"[[./"+path+"]]"
+#+END_SRC
+
+**** Function
+#+begin_src python :noweb yes :results drawer :exports results
+path = "../figures/sampling_function.png"
+
+def gx(x):
+    return(-2*x)
+
+def foverg(x):
+    return(pi_curve(x)/gx(x))
+
+def foverg_var(x,meanpi):
+    return((x-meanpi)^2)
+
+def cdfm1(z):
+    y = -np.sqrt(2 * z) /np.sqrt(2)
+    return(y)
+
+
+xvals = np.linspace(0,1,1<<10)
+yvals = [cdfm1(x) for x in xvals]
+plt.clf()
+plt.gca().set_aspect('equal')
+plt.plot(xvals,yvals)
+plt.savefig(path)
+<<dressPath>>
+#+end_src
+
+#+RESULTS:
+:results:
+[[./../figures/sampling_function.png]]
+:end:
+
+The above figure shows the distribution function that we shall use. There
+are many points close to $x\approx0$ and the points progressively decrease
+as we approach $x\approx1$.
+
+**** Simulation
+#+begin_src python :results none
+nb=22
+corrlen=0
+npoints=(1 << nb )
+npointsall=(1 << nb ) + corrlen
+randvals = [cdfm1(x) for x in np.random.rand(npointsall)]
+
+# Calculate via MC simul
+pivals = [foverg(x) for x in randvals]
+meanpi = st.mean(pivals)
+meanpilist = meanpi*np.ones(npoints);
+varpivals = [pi_curve_var(x) for x in zip(pivals,meanpilist)]
+errorpi=np.sqrt(np.sum(varpivals)/(npoints-1))/np.sqrt(npoints)
+exactI=np.pi/4
+
+print(f'meanpi = {meanpi} exact={exactI} \n error={errorpi} errorExact={exactI-meanpi}')
+#+end_src
+
+*** Code(results)
+#+begin_example
+meanpi = 0.7858500513037664 exact=0.7853981633974483
+ error=0.0008344871199825027 errorExact=-0.0004518879063181158
+#+end_example
