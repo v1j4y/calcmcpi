@@ -41,7 +41,7 @@ $$
 
 #+ATTR_ORG: :width 400
 #+ATTR_LATEX: :width 4in
-[[../figures/area_quarter_unit_circle.png]]
+[[../docs/figures/area_quarter_unit_circle.png]]
 
 The goal is to understand the strengths and weaknesses of
 the various monte-carlo methods for the purpose of
@@ -68,7 +68,7 @@ deduced directly.
 
 #+ATTR_ORG: :width 400
 #+ATTR_LATEX: :width 4in
-[[../figures/hit_and_miss_sampling.png]]
+[[../docs/figures/hit_and_miss_sampling.png]]
 
 The algorithm involves simply generating uniformly
 distributed set of points within the range (0-1). The function
@@ -150,7 +150,7 @@ deduced directly.
 
 #+ATTR_ORG: :width 400
 #+ATTR_LATEX: :width 4in
-[[../figures/crude_sampling.png]]
+[[../docs/figures/crude_sampling.png]]
 
 The algorithm involves simply generating uniformly
 distributed set of points within the range (0-1). The estimator
@@ -227,7 +227,7 @@ within the stata.
 
 #+ATTR_ORG: :width 400
 #+ATTR_LATEX: :width 4in
-[[../figures/stratified_sampling.png]]
+[[../docs/figures/stratified_sampling.png]]
 
 *** Code
 
@@ -357,7 +357,7 @@ Invting a distribution,
 
 **** Function
 #+begin_src python :noweb yes :results drawer :exports results
-path = "../figures/sampling_function.png"
+path = "../docs/figures/sampling_function.png"
 
 def gx(x):
     return(-2*x)
@@ -384,7 +384,7 @@ plt.savefig(path)
 
 #+RESULTS:
 :results:
-[[./../figures/sampling_function.png]]
+[[./../docs/figures/sampling_function.png]]
 :end:
 
 The above figure shows the distribution function that we shall use. There
