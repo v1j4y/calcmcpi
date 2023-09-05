@@ -533,11 +533,6 @@ class="math inline">\(g(x)\)</span> must be normalized.</p>
 \]</span></p>
 <p>Invting a distribution,</p>
 <h3 id="code-3">Code</h3>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># &quot;path&quot; variable must be set by block that</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># expands this org source code block</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">&quot;[[./&quot;</span><span class="op">+</span>path<span class="op">+</span><span class="st">&quot;]]&quot;</span></span></code></pre></div>
 <ol type="1">
 <li><p>Function</p>
 <div class="RESULTS drawer">
@@ -551,22 +546,22 @@ class="math inline">\(x\approx0\)</span> and the points progressively
 decrease as we approach <span
 class="math inline">\(x\approx1\)</span>.</p></li>
 <li><p>Simulation</p>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>nb<span class="op">=</span><span class="dv">22</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>corrlen<span class="op">=</span><span class="dv">0</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>npoints<span class="op">=</span>(<span class="dv">1</span> <span class="op">&lt;&lt;</span> nb )</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>npointsall<span class="op">=</span>(<span class="dv">1</span> <span class="op">&lt;&lt;</span> nb ) <span class="op">+</span> corrlen</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>randvals <span class="op">=</span> [cdfm1(x) <span class="cf">for</span> x <span class="kw">in</span> np.random.rand(npointsall)]</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate via MC simul</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>pivals <span class="op">=</span> [foverg(x) <span class="cf">for</span> x <span class="kw">in</span> randvals]</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>meanpi <span class="op">=</span> st.mean(pivals)</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>meanpilist <span class="op">=</span> meanpi<span class="op">*</span>np.ones(npoints)<span class="op">;</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>varpivals <span class="op">=</span> [pi_curve_var(x) <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">zip</span>(pivals,meanpilist)]</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>errorpi<span class="op">=</span>np.sqrt(np.<span class="bu">sum</span>(varpivals)<span class="op">/</span>(npoints<span class="op">-</span><span class="dv">1</span>))<span class="op">/</span>np.sqrt(npoints)</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>exactI<span class="op">=</span>np.pi<span class="op">/</span><span class="dv">4</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;meanpi = </span><span class="sc">{</span>meanpi<span class="sc">}</span><span class="ss"> exact=</span><span class="sc">{</span>exactI<span class="sc">}</span><span class="ss"> </span><span class="ch">\n</span><span class="ss"> error=</span><span class="sc">{</span>errorpi<span class="sc">}</span><span class="ss"> errorExact=</span><span class="sc">{</span>exactI<span class="op">-</span>meanpi<span class="sc">}</span><span class="ss">&#39;</span>)</span></code></pre></div></li>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>nb<span class="op">=</span><span class="dv">22</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>corrlen<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>npoints<span class="op">=</span>(<span class="dv">1</span> <span class="op">&lt;&lt;</span> nb )</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>npointsall<span class="op">=</span>(<span class="dv">1</span> <span class="op">&lt;&lt;</span> nb ) <span class="op">+</span> corrlen</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>randvals <span class="op">=</span> [cdfm1(x) <span class="cf">for</span> x <span class="kw">in</span> np.random.rand(npointsall)]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate via MC simul</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>pivals <span class="op">=</span> [foverg(x) <span class="cf">for</span> x <span class="kw">in</span> randvals]</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>meanpi <span class="op">=</span> st.mean(pivals)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>meanpilist <span class="op">=</span> meanpi<span class="op">*</span>np.ones(npoints)<span class="op">;</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>varpivals <span class="op">=</span> [pi_curve_var(x) <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">zip</span>(pivals,meanpilist)]</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>errorpi<span class="op">=</span>np.sqrt(np.<span class="bu">sum</span>(varpivals)<span class="op">/</span>(npoints<span class="op">-</span><span class="dv">1</span>))<span class="op">/</span>np.sqrt(npoints)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>exactI<span class="op">=</span>np.pi<span class="op">/</span><span class="dv">4</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;meanpi = </span><span class="sc">{</span>meanpi<span class="sc">}</span><span class="ss"> exact=</span><span class="sc">{</span>exactI<span class="sc">}</span><span class="ss"> </span><span class="ch">\n</span><span class="ss"> error=</span><span class="sc">{</span>errorpi<span class="sc">}</span><span class="ss"> errorExact=</span><span class="sc">{</span>exactI<span class="op">-</span>meanpi<span class="sc">}</span><span class="ss">&#39;</span>)</span></code></pre></div></li>
 </ol>
 <h3 id="coderesults">Code(results)</h3>
 <pre class="example"><code>meanpi = 0.7858500513037664 exact=0.7853981633974483

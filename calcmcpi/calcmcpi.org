@@ -347,6 +347,7 @@ distribution $g(x)$ must be normalized.
 Invting a distribution,
 
 *** Code
+**** Path :noexport:
 #+NAME: dressPath
 #+BEGIN_SRC python :session p1 :noweb
 

@@ -313,13 +313,6 @@ Invting a distribution,
 
 ### Code
 
-``` python
-
-# "path" variable must be set by block that
-# expands this org source code block
-"[[./"+path+"]]"
-```
-
 1.  Function
 
     <div class="RESULTS drawer">
