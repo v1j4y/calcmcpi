@@ -58,53 +58,52 @@ $$
 \theta = \sum_i^N \frac{g(x_i,y_i)}{N}
 $$
 
-### Code
+### Code (Matlab)
 
 1.  Functions
 
-    ``` python
-    def hit_or_miss(p):
-        (x, y) = p
-        if np.sqrt(x**2 + y**2) > 1:
-            return(0)
-        else:
-            return(1)
+    ``` matlab
+    function result = hit_or_miss(p)
+        x = p(1);
+        y = p(2);
+        if sqrt(x^2 + y^2) > 1
+            result = 0;
+        else
+            result = 1;
+        end
+    end
 
-    def hit_or_miss_var(inp):
-        (x, meanpi) = inp
-        return((x-meanpi)**2)
+    function result = hit_or_miss_var(inp)
+        x = inp(1);
+        meanpi = inp(2);
+        result = (x - meanpi)^2;
+    end
     ```
 
 2.  Simulation
 
-    ``` python
-    nb=24
-    corrlen=0
-    npoints=(1 << nb )
-    npointsall=(1 << nb ) + corrlen
-    randvalsx = np.random.rand(npointsall);
-    randvalsy = np.random.rand(npointsall);
-    pivalslist=np.zeros(npointsall);
+    ``` matlab
+    nb = 24;
+    corrlen = 0;
+    npoints = 2^nb;
+    npointsall = 2^nb + corrlen;
+    randvalsx = rand(1, npointsall);
+    randvalsy = rand(1, npointsall);
+    pivalslist = zeros(1, npointsall);
 
-    # Calculate via MC simul
-    meanpi = st.mean(map(hit_or_miss, zip(randvalsx,randvalsy)))
-    pivals = map(hit_or_miss, zip(randvalsx,randvalsy))
-    meanpilist = meanpi*np.ones(npoints);
-    varpivals = map(hit_or_miss_var, zip(pivals,meanpilist))
-    errorpi=np.sqrt(sum(varpivals)/(npoints-1))/np.sqrt(npoints)
-    # π
-    exactI=np.pi/4
-    print(f'meanpi = {meanpi} exact={exactI} \n error={errorpi} errorExact={exactI-meanpi}')
+    % Calculate via MC simul
+    randpoints = [randvalsx; randvalsy]';
+    meanpi = mean(arrayfun(@hit_or_miss, randpoints));
+    pivals = arrayfun(@hit_or_miss, randpoints);
+    meanpilist = meanpi * ones(1, npoints);
+    varpivals = arrayfun(@hit_or_miss_var, pivals, meanpilist);
+    errorpi = sqrt(sum(varpivals) / (npoints - 1)) / sqrt(npoints);
 
-    # Results
+    % π
+    exactI = pi/4;
+    fprintf('meanpi = %f exact=%f \n error=%f errorExact=%f\n', meanpi, exactI, errorpi, exactI - meanpi);
+
     ```
-
-### Code (Output)
-
-``` example
-meanpi = 0.785393238067627 exact=0.7853981633974483
- error=0.00010023175734353169 errorExact=4.9253298213258745e-06
-```
 
 ## Crude monte-carlo
 
@@ -133,47 +132,45 @@ $$
 
 and $\xi_i$ is a uniform random number betwee ($0,1$).
 
-### Code
+### Code (Matlab)
 
 1.  Functions
 
-    ``` python
-    def pi_curve(x):
-        return(np.sqrt(1.0 - x*x))
+    ``` matlab
+    function result = pi_curve(x)
+        result = sqrt(1.0 - x^2);
+    end
 
-    def pi_curve_var(inp):
-        (x, meanpi) = inp
-        return((x-meanpi)**2)
+    function result = pi_curve_var(inp)
+        x = inp(1);
+        meanpi = inp(2);
+        result = (x - meanpi)^2;
+    end
+
     ```
 
 2.  Simulation
 
-    ``` python
-    nb=24
-    corrlen=0
-    npoints=(1 << nb )
-    npointsall=(1 << nb ) + corrlen
-    randvals = np.random.rand(npointsall);
-    pivalslist=np.zeros(npointsall);
+    ``` matlab
+    nb = 24;
+    corrlen = 0;
+    npoints = 2^nb;
+    npointsall = 2^nb + corrlen;
+    randvals = rand(1, npointsall);
+    pivalslist = zeros(1, npointsall);
 
-    # Calculate via MC simul
-    meanpi = st.mean(map(pi_curve, randvals))
-    pivals = map(pi_curve, randvals)
-    meanpilist = meanpi*np.ones(npoints);
-    varpivals = map(pi_curve_var, zip(pivals,meanpilist))
-    errorpi=np.sqrt(sum(varpivals)/(npoints-1))/np.sqrt(npoints)
-    # π
-    exactI=np.pi/4
-    print(f'meanpi = {meanpi} exact={exactI} \n error={errorpi} errorExact={exactI-meanpi}')
+    % Calculate via MC simul
+    meanpi = mean(arrayfun(@pi_curve, randvals));
+    pivals = arrayfun(@pi_curve, randvals);
+    meanpilist = meanpi * ones(1, npoints);
+    varpivals = arrayfun(@pi_curve_var, pivals, meanpilist);
+    errorpi = sqrt(sum(varpivals) / (npoints - 1)) / sqrt(npoints);
+
+    % π
+    exactI = pi/4;
+    fprintf('meanpi = %f exact=%f \n error=%f errorExact=%f\n', meanpi, exactI, errorpi, exactI - meanpi);
 
     ```
-
-### Code (Output)
-
-``` example
-meanpi = 0.7854022279396252 exact=0.7853981633974483
- error=5.447856099833516e-05 errorExact=-4.0645421769403e-06
-```
 
 ## Stratified sampling
 
@@ -191,97 +188,85 @@ within the stata.
 
 ![](../docs/figures/stratified_sampling.png)
 
-### Code
+### Code (Matlab)
 
-1.  Function
+1.  Functions
 
-    ``` python
-    def interval_gen(nint):
-        return(np.linspace(0,1,nint+1))
+    ``` matlab
+    function inter_list = interval_gen(nint)
+        inter_list = linspace(0, 1, nint + 1);
+    end
 
-    def strat_rand(x, a, b):
-        return( a + x*(b-a) )
+    function result = strat_rand(x, a, b)
+        result = a + x * (b - a);
+    end
 
-    def strat_calc(x,
-                    list_npoints_inter,
-                    list_sum_inter,
-                    list_sum_inter2,
-                    list_sum_inter_witha,
-                    inter_list):
-        idinter = np.searchsorted(inter_list,x)-1
-        list_npoints_inter[idinter] += 1
-        list_sum_inter[idinter] += (pi_curve(x))
-        δa = inter_list[idinter+1]-inter_list[idinter];
-        list_sum_inter_witha[idinter] += δa * (pi_curve(x))
-        list_sum_inter2[idinter] += pi_curve(x) * pi_curve(x)
+    function strat_calc(x, list_npoints_inter, list_sum_inter, list_sum_inter2, list_sum_inter_witha, inter_list)
+        idinter = find(inter_list <= x, 1, 'last') - 1;
+        list_npoints_inter(idinter) = list_npoints_inter(idinter) + 1;
+        list_sum_inter(idinter) = list_sum_inter(idinter) + pi_curve(x);
+        δa = inter_list(idinter + 1) - inter_list(idinter);
+        list_sum_inter_witha(idinter) = list_sum_inter_witha(idinter) + δa * pi_curve(x);
+        list_sum_inter2(idinter) = list_sum_inter2(idinter) + pi_curve(x) * pi_curve(x);
+    end
 
-    def strat_rand_calc(x, a, b,
-                    list_npoints_inter,
-                    list_sum_inter,
-                    list_sum_inter2,
-                    list_sum_inter_witha,
-                    inter_list):
-        x = ( a + x*(b-a) )
-        idinter = np.searchsorted(inter_list,x)-1
-        list_npoints_inter[idinter] += 1
-        list_sum_inter[idinter] += (pi_curve(x))
-        δa = inter_list[idinter+1]-inter_list[idinter];
-        list_sum_inter_witha[idinter] += δa * (pi_curve(x))
-        list_sum_inter2[idinter] += pi_curve(x) * pi_curve(x)
+    function strat_rand_calc(x, a, b, list_npoints_inter, list_sum_inter, list_sum_inter2, list_sum_inter_witha, inter_list)
+        x = a + x * (b - a);
+        idinter = find(inter_list <= x, 1, 'last') - 1;
+        list_npoints_inter(idinter) = list_npoints_inter(idinter) + 1;
+        list_sum_inter(idinter) = list_sum_inter(idinter) + pi_curve(x);
+        δa = inter_list(idinter + 1) - inter_list(idinter);
+        list_sum_inter_witha(idinter) = list_sum_inter_witha(idinter) + δa * pi_curve(x);
+        list_sum_inter2(idinter) = list_sum_inter2(idinter) + pi_curve(x) * pi_curve(x);
+    end
 
     ```
 
 2.  Simulation
 
-    ``` python
-    nb = 10
-    npint = 2
-    nint = 1 << npint
-    corrlen=0
-    npoints=(1 << nb )
-    npointsall=(1 << nb )
-    randvals = np.random.rand(npointsall)
-    print(npointsall)
-    list_npoints_inter = np.zeros(nint,dtype=int)
-    list_sum_inter = np.zeros(nint)
-    list_sum_inter2 = np.zeros(nint)
-    list_sum_inter_witha = np.zeros(nint)
-    inter_list = interval_gen(nint)
-    list_mean_inter = np.zeros(nint)
+    ``` matlab
+    nb = 10;
+    npint = 2;
+    nint = 2^npint;
+    corrlen = 0;
+    npoints = 2^nb;
+    npointsall = 2^nb;
+    randvals = rand(1, npointsall);
+    fprintf('%d\n', npointsall);
 
-    for i in range(nint):
-        step = npointsall >> npint
-        a = inter_list[i]
-        b = inter_list[i+1]
-        [ strat_rand_calc(x, a, b,
-                          list_npoints_inter,
-                          list_sum_inter,
-                          list_sum_inter2,
-                          list_sum_inter_witha,
-                          inter_list) for x in randvals[step*(i):step*(i+1)]]
+    list_npoints_inter = zeros(1, nint);
+    list_sum_inter = zeros(1, nint);
+    list_sum_inter2 = zeros(1, nint);
+    list_sum_inter_witha = zeros(1, nint);
+    inter_list = interval_gen(nint);
+    list_mean_inter = zeros(1, nint);
 
-    list_mean_inter = [i/j for i,j in
-                       zip(list_sum_inter_witha,list_npoints_inter)]
+    for i = 1:nint
+        step = npointsall / 2^npint;
+        a = inter_list(i);
+        b = inter_list(i+1);
+        idx = (step*(i-1)+1):(step*i);
+        for j = idx
+            strat_rand_calc(randvals(j), a, b, list_npoints_inter, list_sum_inter, list_sum_inter2, list_sum_inter_witha, inter_list);
+        end
+    end
 
-    meanpi=np.sum(list_mean_inter);
+    list_mean_inter = list_sum_inter_witha ./ list_npoints_inter;
+
+    meanpi = sum(list_mean_inter);
     varpi = 0.0;
-    for it in range(nint):
-        δa = inter_list[it+1] - inter_list[it];
-        nit = list_npoints_inter[it]
-        varpi += δa * δa * ( list_sum_inter2[it] - nit * list_mean_inter[it] * list_mean_inter[it] )/(nit * (nit - 1));
+    for it = 1:nint
+        δa = inter_list(it+1) - inter_list(it);
+        nit = list_npoints_inter(it);
+        varpi = varpi + δa^2 * (list_sum_inter2(it) - nit * list_mean_inter(it)^2) / (nit * (nit - 1));
+    end
 
-    errorpi = np.sqrt(varpi)
-    exactI=0.4180232931306735
-    exactI=np.pi/4
-    print(f'meanpi = {meanpi} exact={exactI} \n error={errorpi} errorExact={exactI-meanpi}')
+    errorpi = sqrt(varpi);
+    exactI = 0.4180232931306735;
+    exactI = pi/4;
+    fprintf('meanpi = %f exact=%f \n error=%f errorExact=%f\n', meanpi, exactI, errorpi, exactI - meanpi);
+
     ```
-
-### Code (output)
-
-``` example
-meanpi = 0.7831097344059315 exact=0.7853981633974483
- error=0.024708860632964468 errorExact=0.002288428991516822
-```
 
 ## Importance sampling
 
@@ -311,43 +296,46 @@ $$
 
 Invting a distribution,
 
-### Code
+### Code (Matlab)
 
 1.  Function
 
-    <div class="RESULTS drawer">
+    ``` matlab
+    function result = gx(x)
+        result = -2 * x;
+    end
 
-    ![](./../docs/figures/sampling_function.png)
+    function result = foverg(x)
+        result = pi_curve(x) / gx(x);
+    end
 
-    </div>
+    function result = foverg_var(x, meanpi)
+        result = (x - meanpi)^2;
+    end
 
-    The above figure shows the distribution function that we shall use.
-    There are many points close to $x\approx0$ and the points
-    progressively decrease as we approach $x\approx1$.
+    function result = cdfm1(z)
+        y = -sqrt(2 * z) / sqrt(2);
+        result = y;
+    end
+    ```
 
 2.  Simulation
 
-    ``` python
-    nb=22
-    corrlen=0
-    npoints=(1 << nb )
-    npointsall=(1 << nb ) + corrlen
-    randvals = [cdfm1(x) for x in np.random.rand(npointsall)]
+    ``` matlab
+    nb = 22;
+    corrlen = 0;
+    npoints = 2^nb;
+    npointsall = 2^nb + corrlen;
+    randvals = arrayfun(@cdfm1, rand(1, npointsall));
 
-    # Calculate via MC simul
-    pivals = [foverg(x) for x in randvals]
-    meanpi = st.mean(pivals)
-    meanpilist = meanpi*np.ones(npoints);
-    varpivals = [pi_curve_var(x) for x in zip(pivals,meanpilist)]
-    errorpi=np.sqrt(np.sum(varpivals)/(npoints-1))/np.sqrt(npoints)
-    exactI=np.pi/4
+    % Calculate via MC simul
+    pivals = arrayfun(@foverg, randvals);
+    meanpi = mean(pivals);
+    meanpilist = meanpi * ones(1, npoints);
+    varpivals = arrayfun(@pi_curve_var, pivals, meanpilist);
+    errorpi = sqrt(sum(varpivals) / (npoints - 1)) / sqrt(npoints);
+    exactI = pi/4;
 
-    print(f'meanpi = {meanpi} exact={exactI} \n error={errorpi} errorExact={exactI-meanpi}')
+    fprintf('meanpi = %f exact=%f \n error=%f errorExact=%f\n', meanpi, exactI, errorpi, exactI - meanpi);
+
     ```
-
-### Code(results)
-
-``` example
-meanpi = 0.7858500513037664 exact=0.7853981633974483
- error=0.0008344871199825027 errorExact=-0.0004518879063181158
-```

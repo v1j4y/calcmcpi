@@ -247,28 +247,25 @@ id="toc-monte-carlo-methods">Monte-Carlo methods</a>
 <ul>
 <li><a href="#hit-or-miss" id="toc-hit-or-miss">Hit or Miss</a>
 <ul>
-<li><a href="#code" id="toc-code">Code</a></li>
-<li><a href="#code-output" id="toc-code-output">Code (Output)</a></li>
+<li><a href="#code-matlab" id="toc-code-matlab">Code (Matlab)</a></li>
 </ul></li>
 <li><a href="#crude-monte-carlo" id="toc-crude-monte-carlo">Crude
 monte-carlo</a>
 <ul>
-<li><a href="#code-1" id="toc-code-1">Code</a></li>
-<li><a href="#code-output-1" id="toc-code-output-1">Code
-(Output)</a></li>
+<li><a href="#code-matlab-1" id="toc-code-matlab-1">Code
+(Matlab)</a></li>
 </ul></li>
 <li><a href="#stratified-sampling"
 id="toc-stratified-sampling">Stratified sampling</a>
 <ul>
-<li><a href="#code-2" id="toc-code-2">Code</a></li>
-<li><a href="#code-output-2" id="toc-code-output-2">Code
-(output)</a></li>
+<li><a href="#code-matlab-2" id="toc-code-matlab-2">Code
+(Matlab)</a></li>
 </ul></li>
 <li><a href="#importance-sampling"
 id="toc-importance-sampling">Importance sampling</a>
 <ul>
-<li><a href="#code-3" id="toc-code-3">Code</a></li>
-<li><a href="#coderesults" id="toc-coderesults">Code(results)</a></li>
+<li><a href="#code-matlab-3" id="toc-code-matlab-3">Code
+(Matlab)</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -321,45 +318,47 @@ the unit square (<span class="math inline">\(1,1\)</span>).</p>
 <p><span class="math display">\[
 \theta = \sum_i^N \frac{g(x_i,y_i)}{N}
 \]</span></p>
-<h3 id="code">Code</h3>
+<h3 id="code-matlab">Code (Matlab)</h3>
 <ol type="1">
 <li><p>Functions</p>
 <div class="sourceCode" id="cb1"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> hit_or_miss(p):</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    (x, y) <span class="op">=</span> p</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> np.sqrt(x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span>) <span class="op">&gt;</span> <span class="dv">1</span>:</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span>(<span class="dv">0</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span>(<span class="dv">1</span>)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> hit_or_miss_var(inp):</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    (x, meanpi) <span class="op">=</span> inp</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>((x<span class="op">-</span>meanpi)<span class="op">**</span><span class="dv">2</span>)</span></code></pre></div></li>
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">result</span> <span class="op">=</span> <span class="va">hit_or_miss</span>(<span class="va">p</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">x</span> <span class="op">=</span> <span class="va">p</span>(<span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">y</span> <span class="op">=</span> <span class="va">p</span>(<span class="fl">2</span>)<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> <span class="va">sqrt</span>(<span class="va">x</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">y</span><span class="op">^</span><span class="fl">2</span>) <span class="op">&gt;</span> <span class="fl">1</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">result</span> <span class="op">=</span> <span class="fl">0</span><span class="op">;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">else</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">result</span> <span class="op">=</span> <span class="fl">1</span><span class="op">;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">end</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">result</span> <span class="op">=</span> <span class="va">hit_or_miss_var</span>(<span class="va">inp</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="va">x</span> <span class="op">=</span> <span class="va">inp</span>(<span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="va">meanpi</span> <span class="op">=</span> <span class="va">inp</span>(<span class="fl">2</span>)<span class="op">;</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="va">result</span> <span class="op">=</span> (<span class="va">x</span> <span class="op">-</span> <span class="va">meanpi</span>)<span class="op">^</span><span class="fl">2</span><span class="op">;</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div></li>
 <li><p>Simulation</p>
 <div class="sourceCode" id="cb2"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>nb<span class="op">=</span><span class="dv">24</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>corrlen<span class="op">=</span><span class="dv">0</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>npoints<span class="op">=</span>(<span class="dv">1</span> <span class="op">&lt;&lt;</span> nb )</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>npointsall<span class="op">=</span>(<span class="dv">1</span> <span class="op">&lt;&lt;</span> nb ) <span class="op">+</span> corrlen</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>randvalsx <span class="op">=</span> np.random.rand(npointsall)<span class="op">;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>randvalsy <span class="op">=</span> np.random.rand(npointsall)<span class="op">;</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>pivalslist<span class="op">=</span>np.zeros(npointsall)<span class="op">;</span></span>
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">nb</span> <span class="op">=</span> <span class="fl">24</span><span class="op">;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">corrlen</span> <span class="op">=</span> <span class="fl">0</span><span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">npoints</span> <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">nb</span><span class="op">;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="va">npointsall</span> <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">nb</span> <span class="op">+</span> <span class="va">corrlen</span><span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="va">randvalsx</span> <span class="op">=</span> <span class="va">rand</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npointsall</span>)<span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="va">randvalsy</span> <span class="op">=</span> <span class="va">rand</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npointsall</span>)<span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="va">pivalslist</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npointsall</span>)<span class="op">;</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate via MC simul</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>meanpi <span class="op">=</span> st.mean(<span class="bu">map</span>(hit_or_miss, <span class="bu">zip</span>(randvalsx,randvalsy)))</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>pivals <span class="op">=</span> <span class="bu">map</span>(hit_or_miss, <span class="bu">zip</span>(randvalsx,randvalsy))</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>meanpilist <span class="op">=</span> meanpi<span class="op">*</span>np.ones(npoints)<span class="op">;</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>varpivals <span class="op">=</span> <span class="bu">map</span>(hit_or_miss_var, <span class="bu">zip</span>(pivals,meanpilist))</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>errorpi<span class="op">=</span>np.sqrt(<span class="bu">sum</span>(varpivals)<span class="op">/</span>(npoints<span class="op">-</span><span class="dv">1</span>))<span class="op">/</span>np.sqrt(npoints)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># π</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>exactI<span class="op">=</span>np.pi<span class="op">/</span><span class="dv">4</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;meanpi = </span><span class="sc">{</span>meanpi<span class="sc">}</span><span class="ss"> exact=</span><span class="sc">{</span>exactI<span class="sc">}</span><span class="ss"> </span><span class="ch">\n</span><span class="ss"> error=</span><span class="sc">{</span>errorpi<span class="sc">}</span><span class="ss"> errorExact=</span><span class="sc">{</span>exactI<span class="op">-</span>meanpi<span class="sc">}</span><span class="ss">&#39;</span>)</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Results</span></span></code></pre></div></li>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">% Calculate via MC simul</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="va">randpoints</span> <span class="op">=</span> [<span class="va">randvalsx</span><span class="op">;</span> <span class="va">randvalsy</span>]<span class="op">&#39;;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="va">meanpi</span> <span class="op">=</span> <span class="va">mean</span>(<span class="va">arrayfun</span>(<span class="op">@</span><span class="va">hit_or_miss</span><span class="op">,</span> <span class="va">randpoints</span>))<span class="op">;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="va">pivals</span> <span class="op">=</span> <span class="va">arrayfun</span>(<span class="op">@</span><span class="va">hit_or_miss</span><span class="op">,</span> <span class="va">randpoints</span>)<span class="op">;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="va">meanpilist</span> <span class="op">=</span> <span class="va">meanpi</span> <span class="op">*</span> <span class="va">ones</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npoints</span>)<span class="op">;</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="va">varpivals</span> <span class="op">=</span> <span class="va">arrayfun</span>(<span class="op">@</span><span class="va">hit_or_miss_var</span><span class="op">,</span> <span class="va">pivals</span><span class="op">,</span> <span class="va">meanpilist</span>)<span class="op">;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="va">errorpi</span> <span class="op">=</span> <span class="va">sqrt</span>(<span class="va">sum</span>(<span class="va">varpivals</span>) <span class="op">/</span> (<span class="va">npoints</span> <span class="op">-</span> <span class="fl">1</span>)) <span class="op">/</span> <span class="va">sqrt</span>(<span class="va">npoints</span>)<span class="op">;</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">% π</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="va">exactI</span> <span class="op">=</span> <span class="va">pi</span><span class="op">/</span><span class="fl">4</span><span class="op">;</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="ss">&#39;meanpi = %f exact=%f \n error=%f errorExact=%f\n&#39;</span><span class="op">,</span> <span class="va">meanpi</span><span class="op">,</span> <span class="va">exactI</span><span class="op">,</span> <span class="va">errorpi</span><span class="op">,</span> <span class="va">exactI</span> <span class="op">-</span> <span class="va">meanpi</span>)<span class="op">;</span></span></code></pre></div></li>
 </ol>
-<h3 id="code-output">Code (Output)</h3>
-<pre class="example"><code>meanpi = 0.785393238067627 exact=0.7853981633974483
- error=0.00010023175734353169 errorExact=4.9253298213258745e-06</code></pre>
 <h2 id="crude-monte-carlo">Crude monte-carlo</h2>
 <p>The crude method is the simplest and most inefficient monte-carlo
 algorithm. It simply involves generating uniformly distributed random
@@ -380,38 +379,39 @@ f(x) = \sqrt{1 - x^2}
 \]</span></p>
 <p>and <span class="math inline">\(\xi_i\)</span> is a uniform random
 number betwee (<span class="math inline">\(0,1\)</span>).</p>
-<h3 id="code-1">Code</h3>
+<h3 id="code-matlab-1">Code (Matlab)</h3>
 <ol type="1">
 <li><p>Functions</p>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pi_curve(x):</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>(np.sqrt(<span class="fl">1.0</span> <span class="op">-</span> x<span class="op">*</span>x))</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pi_curve_var(inp):</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    (x, meanpi) <span class="op">=</span> inp</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>((x<span class="op">-</span>meanpi)<span class="op">**</span><span class="dv">2</span>)</span></code></pre></div></li>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">result</span> <span class="op">=</span> <span class="va">pi_curve</span>(<span class="va">x</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">result</span> <span class="op">=</span> <span class="va">sqrt</span>(<span class="fl">1.0</span> <span class="op">-</span> <span class="va">x</span><span class="op">^</span><span class="fl">2</span>)<span class="op">;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">result</span> <span class="op">=</span> <span class="va">pi_curve_var</span>(<span class="va">inp</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">x</span> <span class="op">=</span> <span class="va">inp</span>(<span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="va">meanpi</span> <span class="op">=</span> <span class="va">inp</span>(<span class="fl">2</span>)<span class="op">;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="va">result</span> <span class="op">=</span> (<span class="va">x</span> <span class="op">-</span> <span class="va">meanpi</span>)<span class="op">^</span><span class="fl">2</span><span class="op">;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div></li>
 <li><p>Simulation</p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>nb<span class="op">=</span><span class="dv">24</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>corrlen<span class="op">=</span><span class="dv">0</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>npoints<span class="op">=</span>(<span class="dv">1</span> <span class="op">&lt;&lt;</span> nb )</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>npointsall<span class="op">=</span>(<span class="dv">1</span> <span class="op">&lt;&lt;</span> nb ) <span class="op">+</span> corrlen</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>randvals <span class="op">=</span> np.random.rand(npointsall)<span class="op">;</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>pivalslist<span class="op">=</span>np.zeros(npointsall)<span class="op">;</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate via MC simul</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>meanpi <span class="op">=</span> st.mean(<span class="bu">map</span>(pi_curve, randvals))</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>pivals <span class="op">=</span> <span class="bu">map</span>(pi_curve, randvals)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>meanpilist <span class="op">=</span> meanpi<span class="op">*</span>np.ones(npoints)<span class="op">;</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>varpivals <span class="op">=</span> <span class="bu">map</span>(pi_curve_var, <span class="bu">zip</span>(pivals,meanpilist))</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>errorpi<span class="op">=</span>np.sqrt(<span class="bu">sum</span>(varpivals)<span class="op">/</span>(npoints<span class="op">-</span><span class="dv">1</span>))<span class="op">/</span>np.sqrt(npoints)</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># π</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>exactI<span class="op">=</span>np.pi<span class="op">/</span><span class="dv">4</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;meanpi = </span><span class="sc">{</span>meanpi<span class="sc">}</span><span class="ss"> exact=</span><span class="sc">{</span>exactI<span class="sc">}</span><span class="ss"> </span><span class="ch">\n</span><span class="ss"> error=</span><span class="sc">{</span>errorpi<span class="sc">}</span><span class="ss"> errorExact=</span><span class="sc">{</span>exactI<span class="op">-</span>meanpi<span class="sc">}</span><span class="ss">&#39;</span>)</span></code></pre></div></li>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">nb</span> <span class="op">=</span> <span class="fl">24</span><span class="op">;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">corrlen</span> <span class="op">=</span> <span class="fl">0</span><span class="op">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="va">npoints</span> <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">nb</span><span class="op">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="va">npointsall</span> <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">nb</span> <span class="op">+</span> <span class="va">corrlen</span><span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="va">randvals</span> <span class="op">=</span> <span class="va">rand</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npointsall</span>)<span class="op">;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="va">pivalslist</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npointsall</span>)<span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">% Calculate via MC simul</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="va">meanpi</span> <span class="op">=</span> <span class="va">mean</span>(<span class="va">arrayfun</span>(<span class="op">@</span><span class="va">pi_curve</span><span class="op">,</span> <span class="va">randvals</span>))<span class="op">;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="va">pivals</span> <span class="op">=</span> <span class="va">arrayfun</span>(<span class="op">@</span><span class="va">pi_curve</span><span class="op">,</span> <span class="va">randvals</span>)<span class="op">;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="va">meanpilist</span> <span class="op">=</span> <span class="va">meanpi</span> <span class="op">*</span> <span class="va">ones</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npoints</span>)<span class="op">;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="va">varpivals</span> <span class="op">=</span> <span class="va">arrayfun</span>(<span class="op">@</span><span class="va">pi_curve_var</span><span class="op">,</span> <span class="va">pivals</span><span class="op">,</span> <span class="va">meanpilist</span>)<span class="op">;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="va">errorpi</span> <span class="op">=</span> <span class="va">sqrt</span>(<span class="va">sum</span>(<span class="va">varpivals</span>) <span class="op">/</span> (<span class="va">npoints</span> <span class="op">-</span> <span class="fl">1</span>)) <span class="op">/</span> <span class="va">sqrt</span>(<span class="va">npoints</span>)<span class="op">;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">% π</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="va">exactI</span> <span class="op">=</span> <span class="va">pi</span><span class="op">/</span><span class="fl">4</span><span class="op">;</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="ss">&#39;meanpi = %f exact=%f \n error=%f errorExact=%f\n&#39;</span><span class="op">,</span> <span class="va">meanpi</span><span class="op">,</span> <span class="va">exactI</span><span class="op">,</span> <span class="va">errorpi</span><span class="op">,</span> <span class="va">exactI</span> <span class="op">-</span> <span class="va">meanpi</span>)<span class="op">;</span></span></code></pre></div></li>
 </ol>
-<h3 id="code-output-1">Code (Output)</h3>
-<pre class="example"><code>meanpi = 0.7854022279396252 exact=0.7853981633974483
- error=5.447856099833516e-05 errorExact=-4.0645421769403e-06</code></pre>
 <h2 id="stratified-sampling">Stratified sampling</h2>
 <p>Stratified sampling involves breaking up the domain (i.e. 0 - 1) into
 strata and sampling inside individual strata. The estimator for <span
@@ -425,88 +425,79 @@ class="math inline">\(\pi/4\)</span> is then given by the following.</p>
 differences between local means is larger than the variance of <span
 class="math inline">\(f\)</span> within the stata.</p>
 <p><img src="figures/stratified_sampling.png" /></p>
-<h3 id="code-2">Code</h3>
+<h3 id="code-matlab-2">Code (Matlab)</h3>
 <ol type="1">
-<li><p>Function</p>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> interval_gen(nint):</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>(np.linspace(<span class="dv">0</span>,<span class="dv">1</span>,nint<span class="op">+</span><span class="dv">1</span>))</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> strat_rand(x, a, b):</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>( a <span class="op">+</span> x<span class="op">*</span>(b<span class="op">-</span>a) )</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> strat_calc(x,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                list_npoints_inter,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                list_sum_inter,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                list_sum_inter2,</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                list_sum_inter_witha,</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>                inter_list):</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    idinter <span class="op">=</span> np.searchsorted(inter_list,x)<span class="op">-</span><span class="dv">1</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    list_npoints_inter[idinter] <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    list_sum_inter[idinter] <span class="op">+=</span> (pi_curve(x))</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    δa <span class="op">=</span> inter_list[idinter<span class="op">+</span><span class="dv">1</span>]<span class="op">-</span>inter_list[idinter]<span class="op">;</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    list_sum_inter_witha[idinter] <span class="op">+=</span> δa <span class="op">*</span> (pi_curve(x))</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    list_sum_inter2[idinter] <span class="op">+=</span> pi_curve(x) <span class="op">*</span> pi_curve(x)</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> strat_rand_calc(x, a, b,</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>                list_npoints_inter,</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>                list_sum_inter,</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>                list_sum_inter2,</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>                list_sum_inter_witha,</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>                inter_list):</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> ( a <span class="op">+</span> x<span class="op">*</span>(b<span class="op">-</span>a) )</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    idinter <span class="op">=</span> np.searchsorted(inter_list,x)<span class="op">-</span><span class="dv">1</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    list_npoints_inter[idinter] <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    list_sum_inter[idinter] <span class="op">+=</span> (pi_curve(x))</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    δa <span class="op">=</span> inter_list[idinter<span class="op">+</span><span class="dv">1</span>]<span class="op">-</span>inter_list[idinter]<span class="op">;</span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    list_sum_inter_witha[idinter] <span class="op">+=</span> δa <span class="op">*</span> (pi_curve(x))</span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    list_sum_inter2[idinter] <span class="op">+=</span> pi_curve(x) <span class="op">*</span> pi_curve(x)</span></code></pre></div></li>
+<li><p>Functions</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">inter_list</span> <span class="op">=</span> <span class="va">interval_gen</span>(<span class="va">nint</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">inter_list</span> <span class="op">=</span> <span class="va">linspace</span>(<span class="fl">0</span><span class="op">,</span> <span class="fl">1</span><span class="op">,</span> <span class="va">nint</span> <span class="op">+</span> <span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">result</span> <span class="op">=</span> <span class="va">strat_rand</span>(<span class="va">x</span><span class="op">,</span> <span class="va">a</span><span class="op">,</span> <span class="va">b</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">result</span> <span class="op">=</span> <span class="va">a</span> <span class="op">+</span> <span class="va">x</span> <span class="op">*</span> (<span class="va">b</span> <span class="op">-</span> <span class="va">a</span>)<span class="op">;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">strat_calc</span>(<span class="va">x</span><span class="op">,</span> <span class="va">list_npoints_inter</span><span class="op">,</span> <span class="va">list_sum_inter</span><span class="op">,</span> <span class="va">list_sum_inter2</span><span class="op">,</span> <span class="va">list_sum_inter_witha</span><span class="op">,</span> <span class="va">inter_list</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="va">idinter</span> <span class="op">=</span> <span class="va">find</span>(<span class="va">inter_list</span> <span class="op">&lt;=</span> <span class="va">x</span><span class="op">,</span> <span class="fl">1</span><span class="op">,</span> <span class="ss">&#39;last&#39;</span>) <span class="op">-</span> <span class="fl">1</span><span class="op">;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="va">list_npoints_inter</span>(<span class="va">idinter</span>) <span class="op">=</span> <span class="va">list_npoints_inter</span>(<span class="va">idinter</span>) <span class="op">+</span> <span class="fl">1</span><span class="op">;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="va">list_sum_inter</span>(<span class="va">idinter</span>) <span class="op">=</span> <span class="va">list_sum_inter</span>(<span class="va">idinter</span>) <span class="op">+</span> <span class="va">pi_curve</span>(<span class="va">x</span>)<span class="op">;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    δ<span class="va">a</span> <span class="op">=</span> <span class="va">inter_list</span>(<span class="va">idinter</span> <span class="op">+</span> <span class="fl">1</span>) <span class="op">-</span> <span class="va">inter_list</span>(<span class="va">idinter</span>)<span class="op">;</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="va">list_sum_inter_witha</span>(<span class="va">idinter</span>) <span class="op">=</span> <span class="va">list_sum_inter_witha</span>(<span class="va">idinter</span>) <span class="op">+</span> δ<span class="va">a</span> <span class="op">*</span> <span class="va">pi_curve</span>(<span class="va">x</span>)<span class="op">;</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="va">list_sum_inter2</span>(<span class="va">idinter</span>) <span class="op">=</span> <span class="va">list_sum_inter2</span>(<span class="va">idinter</span>) <span class="op">+</span> <span class="va">pi_curve</span>(<span class="va">x</span>) <span class="op">*</span> <span class="va">pi_curve</span>(<span class="va">x</span>)<span class="op">;</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">strat_rand_calc</span>(<span class="va">x</span><span class="op">,</span> <span class="va">a</span><span class="op">,</span> <span class="va">b</span><span class="op">,</span> <span class="va">list_npoints_inter</span><span class="op">,</span> <span class="va">list_sum_inter</span><span class="op">,</span> <span class="va">list_sum_inter2</span><span class="op">,</span> <span class="va">list_sum_inter_witha</span><span class="op">,</span> <span class="va">inter_list</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="va">x</span> <span class="op">=</span> <span class="va">a</span> <span class="op">+</span> <span class="va">x</span> <span class="op">*</span> (<span class="va">b</span> <span class="op">-</span> <span class="va">a</span>)<span class="op">;</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="va">idinter</span> <span class="op">=</span> <span class="va">find</span>(<span class="va">inter_list</span> <span class="op">&lt;=</span> <span class="va">x</span><span class="op">,</span> <span class="fl">1</span><span class="op">,</span> <span class="ss">&#39;last&#39;</span>) <span class="op">-</span> <span class="fl">1</span><span class="op">;</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="va">list_npoints_inter</span>(<span class="va">idinter</span>) <span class="op">=</span> <span class="va">list_npoints_inter</span>(<span class="va">idinter</span>) <span class="op">+</span> <span class="fl">1</span><span class="op">;</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="va">list_sum_inter</span>(<span class="va">idinter</span>) <span class="op">=</span> <span class="va">list_sum_inter</span>(<span class="va">idinter</span>) <span class="op">+</span> <span class="va">pi_curve</span>(<span class="va">x</span>)<span class="op">;</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    δ<span class="va">a</span> <span class="op">=</span> <span class="va">inter_list</span>(<span class="va">idinter</span> <span class="op">+</span> <span class="fl">1</span>) <span class="op">-</span> <span class="va">inter_list</span>(<span class="va">idinter</span>)<span class="op">;</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="va">list_sum_inter_witha</span>(<span class="va">idinter</span>) <span class="op">=</span> <span class="va">list_sum_inter_witha</span>(<span class="va">idinter</span>) <span class="op">+</span> δ<span class="va">a</span> <span class="op">*</span> <span class="va">pi_curve</span>(<span class="va">x</span>)<span class="op">;</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="va">list_sum_inter2</span>(<span class="va">idinter</span>) <span class="op">=</span> <span class="va">list_sum_inter2</span>(<span class="va">idinter</span>) <span class="op">+</span> <span class="va">pi_curve</span>(<span class="va">x</span>) <span class="op">*</span> <span class="va">pi_curve</span>(<span class="va">x</span>)<span class="op">;</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div></li>
 <li><p>Simulation</p>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>nb <span class="op">=</span> <span class="dv">10</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>npint <span class="op">=</span> <span class="dv">2</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>nint <span class="op">=</span> <span class="dv">1</span> <span class="op">&lt;&lt;</span> npint</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>corrlen<span class="op">=</span><span class="dv">0</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>npoints<span class="op">=</span>(<span class="dv">1</span> <span class="op">&lt;&lt;</span> nb )</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>npointsall<span class="op">=</span>(<span class="dv">1</span> <span class="op">&lt;&lt;</span> nb )</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>randvals <span class="op">=</span> np.random.rand(npointsall)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(npointsall)</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>list_npoints_inter <span class="op">=</span> np.zeros(nint,dtype<span class="op">=</span><span class="bu">int</span>)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>list_sum_inter <span class="op">=</span> np.zeros(nint)</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>list_sum_inter2 <span class="op">=</span> np.zeros(nint)</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>list_sum_inter_witha <span class="op">=</span> np.zeros(nint)</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>inter_list <span class="op">=</span> interval_gen(nint)</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>list_mean_inter <span class="op">=</span> np.zeros(nint)</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(nint):</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    step <span class="op">=</span> npointsall <span class="op">&gt;&gt;</span> npint</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> inter_list[i]</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> inter_list[i<span class="op">+</span><span class="dv">1</span>]</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    [ strat_rand_calc(x, a, b,</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>                      list_npoints_inter,</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>                      list_sum_inter,</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>                      list_sum_inter2,</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>                      list_sum_inter_witha,</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>                      inter_list) <span class="cf">for</span> x <span class="kw">in</span> randvals[step<span class="op">*</span>(i):step<span class="op">*</span>(i<span class="op">+</span><span class="dv">1</span>)]]</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>list_mean_inter <span class="op">=</span> [i<span class="op">/</span>j <span class="cf">for</span> i,j <span class="kw">in</span></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>                   <span class="bu">zip</span>(list_sum_inter_witha,list_npoints_inter)]</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>meanpi<span class="op">=</span>np.<span class="bu">sum</span>(list_mean_inter)<span class="op">;</span></span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>varpi <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> it <span class="kw">in</span> <span class="bu">range</span>(nint):</span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    δa <span class="op">=</span> inter_list[it<span class="op">+</span><span class="dv">1</span>] <span class="op">-</span> inter_list[it]<span class="op">;</span></span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    nit <span class="op">=</span> list_npoints_inter[it]</span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    varpi <span class="op">+=</span> δa <span class="op">*</span> δa <span class="op">*</span> ( list_sum_inter2[it] <span class="op">-</span> nit <span class="op">*</span> list_mean_inter[it] <span class="op">*</span> list_mean_inter[it] )<span class="op">/</span>(nit <span class="op">*</span> (nit <span class="op">-</span> <span class="dv">1</span>))<span class="op">;</span></span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>errorpi <span class="op">=</span> np.sqrt(varpi)</span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>exactI<span class="op">=</span><span class="fl">0.4180232931306735</span></span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>exactI<span class="op">=</span>np.pi<span class="op">/</span><span class="dv">4</span></span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;meanpi = </span><span class="sc">{</span>meanpi<span class="sc">}</span><span class="ss"> exact=</span><span class="sc">{</span>exactI<span class="sc">}</span><span class="ss"> </span><span class="ch">\n</span><span class="ss"> error=</span><span class="sc">{</span>errorpi<span class="sc">}</span><span class="ss"> errorExact=</span><span class="sc">{</span>exactI<span class="op">-</span>meanpi<span class="sc">}</span><span class="ss">&#39;</span>)</span></code></pre></div></li>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">nb</span> <span class="op">=</span> <span class="fl">10</span><span class="op">;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="va">npint</span> <span class="op">=</span> <span class="fl">2</span><span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="va">nint</span> <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">npint</span><span class="op">;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="va">corrlen</span> <span class="op">=</span> <span class="fl">0</span><span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="va">npoints</span> <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">nb</span><span class="op">;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="va">npointsall</span> <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">nb</span><span class="op">;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="va">randvals</span> <span class="op">=</span> <span class="va">rand</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npointsall</span>)<span class="op">;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="ss">&#39;%d\n&#39;</span><span class="op">,</span> <span class="va">npointsall</span>)<span class="op">;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="va">list_npoints_inter</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">nint</span>)<span class="op">;</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="va">list_sum_inter</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">nint</span>)<span class="op">;</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="va">list_sum_inter2</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">nint</span>)<span class="op">;</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="va">list_sum_inter_witha</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">nint</span>)<span class="op">;</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="va">inter_list</span> <span class="op">=</span> <span class="va">interval_gen</span>(<span class="va">nint</span>)<span class="op">;</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="va">list_mean_inter</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">nint</span>)<span class="op">;</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="va">i</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">nint</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="va">step</span> <span class="op">=</span> <span class="va">npointsall</span> <span class="op">/</span> <span class="fl">2</span><span class="op">^</span><span class="va">npint</span><span class="op">;</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="va">a</span> <span class="op">=</span> <span class="va">inter_list</span>(<span class="va">i</span>)<span class="op">;</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="va">b</span> <span class="op">=</span> <span class="va">inter_list</span>(<span class="va">i</span><span class="op">+</span><span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="va">idx</span> <span class="op">=</span> (<span class="va">step</span><span class="op">*</span>(<span class="va">i</span><span class="op">-</span><span class="fl">1</span>)<span class="op">+</span><span class="fl">1</span>)<span class="op">:</span>(<span class="va">step</span><span class="op">*</span><span class="va">i</span>)<span class="op">;</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">for</span> <span class="va">j</span> <span class="op">=</span> <span class="va">idx</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>        <span class="va">strat_rand_calc</span>(<span class="va">randvals</span>(<span class="va">j</span>)<span class="op">,</span> <span class="va">a</span><span class="op">,</span> <span class="va">b</span><span class="op">,</span> <span class="va">list_npoints_inter</span><span class="op">,</span> <span class="va">list_sum_inter</span><span class="op">,</span> <span class="va">list_sum_inter2</span><span class="op">,</span> <span class="va">list_sum_inter_witha</span><span class="op">,</span> <span class="va">inter_list</span>)<span class="op">;</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">end</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="va">list_mean_inter</span> <span class="op">=</span> <span class="va">list_sum_inter_witha</span> <span class="op">./</span> <span class="va">list_npoints_inter</span><span class="op">;</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="va">meanpi</span> <span class="op">=</span> <span class="va">sum</span>(<span class="va">list_mean_inter</span>)<span class="op">;</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="va">varpi</span> <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="va">it</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">nint</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    δ<span class="va">a</span> <span class="op">=</span> <span class="va">inter_list</span>(<span class="va">it</span><span class="op">+</span><span class="fl">1</span>) <span class="op">-</span> <span class="va">inter_list</span>(<span class="va">it</span>)<span class="op">;</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    <span class="va">nit</span> <span class="op">=</span> <span class="va">list_npoints_inter</span>(<span class="va">it</span>)<span class="op">;</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    <span class="va">varpi</span> <span class="op">=</span> <span class="va">varpi</span> <span class="op">+</span> δ<span class="va">a</span><span class="op">^</span><span class="fl">2</span> <span class="op">*</span> (<span class="va">list_sum_inter2</span>(<span class="va">it</span>) <span class="op">-</span> <span class="va">nit</span> <span class="op">*</span> <span class="va">list_mean_inter</span>(<span class="va">it</span>)<span class="op">^</span><span class="fl">2</span>) <span class="op">/</span> (<span class="va">nit</span> <span class="op">*</span> (<span class="va">nit</span> <span class="op">-</span> <span class="fl">1</span>))<span class="op">;</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="va">errorpi</span> <span class="op">=</span> <span class="va">sqrt</span>(<span class="va">varpi</span>)<span class="op">;</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="va">exactI</span> <span class="op">=</span> <span class="fl">0.4180232931306735</span><span class="op">;</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="va">exactI</span> <span class="op">=</span> <span class="va">pi</span><span class="op">/</span><span class="fl">4</span><span class="op">;</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="ss">&#39;meanpi = %f exact=%f \n error=%f errorExact=%f\n&#39;</span><span class="op">,</span> <span class="va">meanpi</span><span class="op">,</span> <span class="va">exactI</span><span class="op">,</span> <span class="va">errorpi</span><span class="op">,</span> <span class="va">exactI</span> <span class="op">-</span> <span class="va">meanpi</span>)<span class="op">;</span></span></code></pre></div></li>
 </ol>
-<h3 id="code-output-2">Code (output)</h3>
-<pre class="example"><code>meanpi = 0.7831097344059315 exact=0.7853981633974483
- error=0.024708860632964468 errorExact=0.002288428991516822</code></pre>
 <h2 id="importance-sampling">Importance sampling</h2>
 <p>The natural next step following stratified sampling is that of
 importance sampling. In the previous method, we chose the strata
@@ -532,39 +523,43 @@ class="math inline">\(g(x)\)</span> must be normalized.</p>
 \int_0^1 g(x)dx = 1
 \]</span></p>
 <p>Invting a distribution,</p>
-<h3 id="code-3">Code</h3>
+<h3 id="code-matlab-3">Code (Matlab)</h3>
 <ol type="1">
 <li><p>Function</p>
-<div class="RESULTS drawer">
-
-<p><img src="figures/sampling_function.png" /></p>
-</div>
-
-<p>The above figure shows the distribution function that we shall use.
-There are many points close to <span
-class="math inline">\(x\approx0\)</span> and the points progressively
-decrease as we approach <span
-class="math inline">\(x\approx1\)</span>.</p></li>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">result</span> <span class="op">=</span> <span class="va">gx</span>(<span class="va">x</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">result</span> <span class="op">=</span> <span class="op">-</span><span class="fl">2</span> <span class="op">*</span> <span class="va">x</span><span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">result</span> <span class="op">=</span> <span class="va">foverg</span>(<span class="va">x</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">result</span> <span class="op">=</span> <span class="va">pi_curve</span>(<span class="va">x</span>) <span class="op">/</span> <span class="va">gx</span>(<span class="va">x</span>)<span class="op">;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">result</span> <span class="op">=</span> <span class="va">foverg_var</span>(<span class="va">x</span><span class="op">,</span> <span class="va">meanpi</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="va">result</span> <span class="op">=</span> (<span class="va">x</span> <span class="op">-</span> <span class="va">meanpi</span>)<span class="op">^</span><span class="fl">2</span><span class="op">;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">result</span> <span class="op">=</span> <span class="va">cdfm1</span>(<span class="va">z</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="va">y</span> <span class="op">=</span> <span class="op">-</span><span class="va">sqrt</span>(<span class="fl">2</span> <span class="op">*</span> <span class="va">z</span>) <span class="op">/</span> <span class="va">sqrt</span>(<span class="fl">2</span>)<span class="op">;</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="va">result</span> <span class="op">=</span> <span class="va">y</span><span class="op">;</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div></li>
 <li><p>Simulation</p>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>nb<span class="op">=</span><span class="dv">22</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>corrlen<span class="op">=</span><span class="dv">0</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>npoints<span class="op">=</span>(<span class="dv">1</span> <span class="op">&lt;&lt;</span> nb )</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>npointsall<span class="op">=</span>(<span class="dv">1</span> <span class="op">&lt;&lt;</span> nb ) <span class="op">+</span> corrlen</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>randvals <span class="op">=</span> [cdfm1(x) <span class="cf">for</span> x <span class="kw">in</span> np.random.rand(npointsall)]</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate via MC simul</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>pivals <span class="op">=</span> [foverg(x) <span class="cf">for</span> x <span class="kw">in</span> randvals]</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>meanpi <span class="op">=</span> st.mean(pivals)</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>meanpilist <span class="op">=</span> meanpi<span class="op">*</span>np.ones(npoints)<span class="op">;</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>varpivals <span class="op">=</span> [pi_curve_var(x) <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">zip</span>(pivals,meanpilist)]</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>errorpi<span class="op">=</span>np.sqrt(np.<span class="bu">sum</span>(varpivals)<span class="op">/</span>(npoints<span class="op">-</span><span class="dv">1</span>))<span class="op">/</span>np.sqrt(npoints)</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>exactI<span class="op">=</span>np.pi<span class="op">/</span><span class="dv">4</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;meanpi = </span><span class="sc">{</span>meanpi<span class="sc">}</span><span class="ss"> exact=</span><span class="sc">{</span>exactI<span class="sc">}</span><span class="ss"> </span><span class="ch">\n</span><span class="ss"> error=</span><span class="sc">{</span>errorpi<span class="sc">}</span><span class="ss"> errorExact=</span><span class="sc">{</span>exactI<span class="op">-</span>meanpi<span class="sc">}</span><span class="ss">&#39;</span>)</span></code></pre></div></li>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">nb</span> <span class="op">=</span> <span class="fl">22</span><span class="op">;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="va">corrlen</span> <span class="op">=</span> <span class="fl">0</span><span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="va">npoints</span> <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">nb</span><span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="va">npointsall</span> <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">nb</span> <span class="op">+</span> <span class="va">corrlen</span><span class="op">;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="va">randvals</span> <span class="op">=</span> <span class="va">arrayfun</span>(<span class="op">@</span><span class="va">cdfm1</span><span class="op">,</span> <span class="va">rand</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npointsall</span>))<span class="op">;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">% Calculate via MC simul</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="va">pivals</span> <span class="op">=</span> <span class="va">arrayfun</span>(<span class="op">@</span><span class="va">foverg</span><span class="op">,</span> <span class="va">randvals</span>)<span class="op">;</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="va">meanpi</span> <span class="op">=</span> <span class="va">mean</span>(<span class="va">pivals</span>)<span class="op">;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="va">meanpilist</span> <span class="op">=</span> <span class="va">meanpi</span> <span class="op">*</span> <span class="va">ones</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npoints</span>)<span class="op">;</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="va">varpivals</span> <span class="op">=</span> <span class="va">arrayfun</span>(<span class="op">@</span><span class="va">pi_curve_var</span><span class="op">,</span> <span class="va">pivals</span><span class="op">,</span> <span class="va">meanpilist</span>)<span class="op">;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="va">errorpi</span> <span class="op">=</span> <span class="va">sqrt</span>(<span class="va">sum</span>(<span class="va">varpivals</span>) <span class="op">/</span> (<span class="va">npoints</span> <span class="op">-</span> <span class="fl">1</span>)) <span class="op">/</span> <span class="va">sqrt</span>(<span class="va">npoints</span>)<span class="op">;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="va">exactI</span> <span class="op">=</span> <span class="va">pi</span><span class="op">/</span><span class="fl">4</span><span class="op">;</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="ss">&#39;meanpi = %f exact=%f \n error=%f errorExact=%f\n&#39;</span><span class="op">,</span> <span class="va">meanpi</span><span class="op">,</span> <span class="va">exactI</span><span class="op">,</span> <span class="va">errorpi</span><span class="op">,</span> <span class="va">exactI</span> <span class="op">-</span> <span class="va">meanpi</span>)<span class="op">;</span></span></code></pre></div></li>
 </ol>
-<h3 id="coderesults">Code(results)</h3>
-<pre class="example"><code>meanpi = 0.7858500513037664 exact=0.7853981633974483
- error=0.0008344871199825027 errorExact=-0.0004518879063181158</code></pre>
 </body>
 </html>
