@@ -1,565 +1,727 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>calcmcpi</title>
-  <style>
-    html {
-      color: #1a1a1a;
-      background-color: #fdfdfd;
-    }
-    body {
-      margin: 0 auto;
-      max-width: 36em;
-      padding-left: 50px;
-      padding-right: 50px;
-      padding-top: 50px;
-      padding-bottom: 50px;
-      hyphens: auto;
-      overflow-wrap: break-word;
-      text-rendering: optimizeLegibility;
-      font-kerning: normal;
-    }
-    @media (max-width: 600px) {
-      body {
-        font-size: 0.9em;
-        padding: 12px;
-      }
-      h1 {
-        font-size: 1.8em;
-      }
-    }
-    @media print {
-      html {
-        background-color: white;
-      }
-      body {
-        background-color: transparent;
-        color: black;
-        font-size: 12pt;
-      }
-      p, h2, h3 {
-        orphans: 3;
-        widows: 3;
-      }
-      h2, h3, h4 {
-        page-break-after: avoid;
-      }
-    }
-    p {
-      margin: 1em 0;
-    }
-    a {
-      color: #1a1a1a;
-    }
-    a:visited {
-      color: #1a1a1a;
-    }
-    img {
-      max-width: 100%;
-    }
-    svg {
-      height: auto;
-      max-width: 100%;
-    }
-    h1, h2, h3, h4, h5, h6 {
-      margin-top: 1.4em;
-    }
-    h5, h6 {
-      font-size: 1em;
-      font-style: italic;
-    }
-    h6 {
-      font-weight: normal;
-    }
-    ol, ul {
-      padding-left: 1.7em;
-      margin-top: 1em;
-    }
-    li > ol, li > ul {
-      margin-top: 0;
-    }
-    blockquote {
-      margin: 1em 0 1em 1.7em;
-      padding-left: 1em;
-      border-left: 2px solid #e6e6e6;
-      color: #606060;
-    }
-    code {
-      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
-      font-size: 85%;
-      margin: 0;
-      hyphens: manual;
-    }
-    pre {
-      margin: 1em 0;
-      overflow: auto;
-    }
-    pre code {
-      padding: 0;
-      overflow: visible;
-      overflow-wrap: normal;
-    }
-    .sourceCode {
-     background-color: transparent;
-     overflow: visible;
-    }
-    hr {
-      background-color: #1a1a1a;
-      border: none;
-      height: 1px;
-      margin: 1em 0;
-    }
-    table {
-      margin: 1em 0;
-      border-collapse: collapse;
-      width: 100%;
-      overflow-x: auto;
-      display: block;
-      font-variant-numeric: lining-nums tabular-nums;
-    }
-    table caption {
-      margin-bottom: 0.75em;
-    }
-    tbody {
-      margin-top: 0.5em;
-      border-top: 1px solid #1a1a1a;
-      border-bottom: 1px solid #1a1a1a;
-    }
-    th {
-      border-top: 1px solid #1a1a1a;
-      padding: 0.25em 0.5em 0.25em 0.5em;
-    }
-    td {
-      padding: 0.125em 0.5em 0.25em 0.5em;
-    }
-    header {
-      margin-bottom: 4em;
-      text-align: center;
-    }
-    #TOC li {
-      list-style: none;
-    }
-    #TOC ul {
-      padding-left: 1.3em;
-    }
-    #TOC > ul {
-      padding-left: 0;
-    }
-    #TOC a:not(:hover) {
-      text-decoration: none;
-    }
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    /* The extra [class] is a hack that increases specificity enough to
-       override a similar rule in reveal.js */
-    ul.task-list[class]{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      font-size: inherit;
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
-      vertical-align: middle;
-    }
-    /* CSS for syntax highlighting */
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      {   }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-    code span.at { color: #7d9029; } /* Attribute */
-    code span.bn { color: #40a070; } /* BaseN */
-    code span.bu { color: #008000; } /* BuiltIn */
-    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #4070a0; } /* Char */
-    code span.cn { color: #880000; } /* Constant */
-    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-    code span.dt { color: #902000; } /* DataType */
-    code span.dv { color: #40a070; } /* DecVal */
-    code span.er { color: #ff0000; font-weight: bold; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #40a070; } /* Float */
-    code span.fu { color: #06287e; } /* Function */
-    code span.im { color: #008000; font-weight: bold; } /* Import */
-    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-    code span.op { color: #666666; } /* Operator */
-    code span.ot { color: #007020; } /* Other */
-    code span.pp { color: #bc7a00; } /* Preprocessor */
-    code span.sc { color: #4070a0; } /* SpecialChar */
-    code span.ss { color: #bb6688; } /* SpecialString */
-    code span.st { color: #4070a0; } /* String */
-    code span.va { color: #19177c; } /* Variable */
-    code span.vs { color: #4070a0; } /* VerbatimString */
-    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-  </style>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
-  type="text/javascript"></script>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
+<!-- 2023-09-06 mer. 12:09 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Calculate Pi using monte-carlo methods</title>
+<meta name="author" content="Vijay Gopal Chilkuri" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+</style>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
-<nav id="TOC" role="doc-toc">
+<div id="content" class="content">
+<h1 class="title">Calculate Pi using monte-carlo methods</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#introduction" id="toc-introduction">Introduction</a></li>
-<li><a href="#monte-carlo-methods"
-id="toc-monte-carlo-methods">Monte-Carlo methods</a>
+<li><a href="#org4714377">1. Introduction</a></li>
+<li><a href="#org8321c51">2. Monte-Carlo methods</a>
 <ul>
-<li><a href="#hit-or-miss" id="toc-hit-or-miss">Hit or Miss</a>
+<li><a href="#org5830a68">2.1. Hit or Miss</a>
 <ul>
-<li><a href="#code-matlab" id="toc-code-matlab">Code (Matlab)</a></li>
-</ul></li>
-<li><a href="#crude-monte-carlo" id="toc-crude-monte-carlo">Crude
-monte-carlo</a>
-<ul>
-<li><a href="#code-matlab-1" id="toc-code-matlab-1">Code
-(Matlab)</a></li>
-</ul></li>
-<li><a href="#stratified-sampling"
-id="toc-stratified-sampling">Stratified sampling</a>
-<ul>
-<li><a href="#code-matlab-2" id="toc-code-matlab-2">Code
-(Matlab)</a></li>
-</ul></li>
-<li><a href="#importance-sampling"
-id="toc-importance-sampling">Importance sampling</a>
-<ul>
-<li><a href="#code-matlab-3" id="toc-code-matlab-3">Code
-(Matlab)</a></li>
-</ul></li>
-</ul></li>
+<li><a href="#orge8a22e2">2.1.1. Code (Matlab)</a></li>
 </ul>
-</nav>
-<div class="HEADER drawer">
-
+</li>
+<li><a href="#org49c124c">2.2. Crude monte-carlo</a>
+<ul>
+<li><a href="#org36dbf03">2.2.1. Code (Matlab)</a></li>
+</ul>
+</li>
+<li><a href="#orgae739da">2.3. Stratified sampling</a>
+<ul>
+<li><a href="#org8082986">2.3.1. Code (Matlab)</a></li>
+</ul>
+</li>
+<li><a href="#orgb2836bb">2.4. Importance sampling</a>
+<ul>
+<li><a href="#org2dad900">2.4.1. Code (Matlab)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 
-<h1 id="introduction">Introduction</h1>
-<p>The one dimensional integral that we shall evaluate using monte-carlo
-methods gives the area of the a quarter of the unit circle. Using this
-and the fact that the analytical value of the are of a quarter of the
-unit circle is given as <span class="math inline">\(\pi/4\)</span>, we
-can find the value of <span class="math inline">\(\pi\)</span>.</p>
-<p><span class="math display">\[
+<div id="outline-container-org4714377" class="outline-2">
+<h2 id="org4714377"><span class="section-number-2">1.</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+The one dimensional integral that we shall evaluate
+using monte-carlo methods gives the area of the
+a quarter of the unit circle. Using this and the fact that the
+analytical value of the are of a quarter of the unit circle is
+given as \(\pi/4\), we can find the value of \(\pi\).
+</p>
+
+<p>
+$$
 I = \int_0^1 f(x,y)\ dx = \int_0^1 \sqrt{1-x^2}\ dx = \frac{\pi}{4}
-\]</span></p>
-<p><img src="figures/area_quarter_unit_circle.png" /></p>
-<p>The goal is to understand the strengths and weaknesses of the various
-monte-carlo methods for the purpose of numerical integration.</p>
-<h1 id="monte-carlo-methods">Monte-Carlo methods</h1>
-<p>Here, we shall test the various algorithms for numerical integration
-and check their labour ratio.</p>
-<h2 id="hit-or-miss">Hit or Miss</h2>
-<p>The crude method is the simplest and most inefficient monte-carlo
-algorithm. It simply involves generating uniformly distributed random
-points inside the unit square and counting the ratio of those points
-that lie within the quarter circle. This gives us the ratio of the area
-of the square and the circle. Since the are of the unit square is 1, the
-are of the circle can be deduced directly.</p>
-<p><img src="figures/hit_and_miss_sampling.png" /></p>
-<p>The algorithm involves simply generating uniformly distributed set of
-points within the range (0-1). The function we want to sample is given
-as.</p>
-<p><span class="math display">\[
+$$
+</p>
+
+
+<div id="org09b5ed7" class="figure">
+<p><img src="figures/area_quarter_unit_circle.png" alt="area_quarter_unit_circle.png" />
+</p>
+</div>
+
+<p>
+The goal is to understand the strengths and weaknesses of
+the various monte-carlo methods for the purpose of
+numerical integration.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8321c51" class="outline-2">
+<h2 id="org8321c51"><span class="section-number-2">2.</span> Monte-Carlo methods</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Here, we shall test the various algorithms for
+numerical integration and check their labour ratio.
+</p>
+</div>
+
+<div id="outline-container-org5830a68" class="outline-3">
+<h3 id="org5830a68"><span class="section-number-3">2.1.</span> Hit or Miss</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+The crude method is the simplest and most inefficient
+monte-carlo algorithm. It simply involves generating
+uniformly distributed random points inside the unit
+square and counting the ratio of those points that lie
+within the quarter circle. This gives us the ratio of
+the area of the square and the circle. Since the are
+of the unit square is 1, the are of the circle can be
+deduced directly.
+</p>
+
+
+<div id="org826980b" class="figure">
+<p><img src="figures/hit_and_miss_sampling.png" alt="hit_and_miss_sampling.png" />
+</p>
+</div>
+
+<p>
+The algorithm involves simply generating uniformly
+distributed set of points within the range (0-1). The function
+we want to sample is given as.
+</p>
+
+<p>
+$$
+</p>
 \begin{equation}
 g(x,y) =
 \left\{
-\begin{array}{ll}
-1  &amp; \mbox{if } \sqrt{1-x^2} \le 1 \\
-0  &amp; \mbox{if } \sqrt{1-x^2} &gt; 1
-\end{array}
+  \begin{array}{ll}
+    1  & \mbox{if } \sqrt{1-x^2} \le 1 \\
+    0  & \mbox{if } \sqrt{1-x^2} > 1
+  \end{array}
 \right.
 \end{equation}
-\]</span></p>
-<p>Then the estimator given below is an unbiased estimator for the
-integral <span class="math inline">\(\theta\)</span> for uniformly
-generated points (<span class="math inline">\(x_i,y_i\)</span>) within
-the unit square (<span class="math inline">\(1,1\)</span>).</p>
-<p><span class="math display">\[
+<p>
+$$
+</p>
+
+<p>
+Then the estimator given below is an unbiased estimator for
+the integral \(\theta\) for uniformly generated points (\(x_i,y_i\)) within
+the unit square (\(1,1\)).
+</p>
+
+<p>
+$$
 \theta = \sum_i^N \frac{g(x_i,y_i)}{N}
-\]</span></p>
-<h3 id="code-matlab">Code (Matlab)</h3>
-<ol type="1">
-<li><p>Functions</p>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">result</span> <span class="op">=</span> <span class="va">hit_or_miss</span>(<span class="va">p</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">x</span> <span class="op">=</span> <span class="va">p</span>(<span class="fl">1</span>)<span class="op">;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">y</span> <span class="op">=</span> <span class="va">p</span>(<span class="fl">2</span>)<span class="op">;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> <span class="va">sqrt</span>(<span class="va">x</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">y</span><span class="op">^</span><span class="fl">2</span>) <span class="op">&gt;</span> <span class="fl">1</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">result</span> <span class="op">=</span> <span class="fl">0</span><span class="op">;</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">else</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">result</span> <span class="op">=</span> <span class="fl">1</span><span class="op">;</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">end</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">result</span> <span class="op">=</span> <span class="va">hit_or_miss_var</span>(<span class="va">inp</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="va">x</span> <span class="op">=</span> <span class="va">inp</span>(<span class="fl">1</span>)<span class="op">;</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="va">meanpi</span> <span class="op">=</span> <span class="va">inp</span>(<span class="fl">2</span>)<span class="op">;</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="va">result</span> <span class="op">=</span> (<span class="va">x</span> <span class="op">-</span> <span class="va">meanpi</span>)<span class="op">^</span><span class="fl">2</span><span class="op">;</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div></li>
-<li><p>Simulation</p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">nb</span> <span class="op">=</span> <span class="fl">24</span><span class="op">;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">corrlen</span> <span class="op">=</span> <span class="fl">0</span><span class="op">;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">npoints</span> <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">nb</span><span class="op">;</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="va">npointsall</span> <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">nb</span> <span class="op">+</span> <span class="va">corrlen</span><span class="op">;</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="va">randvalsx</span> <span class="op">=</span> <span class="va">rand</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npointsall</span>)<span class="op">;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="va">randvalsy</span> <span class="op">=</span> <span class="va">rand</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npointsall</span>)<span class="op">;</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="va">pivalslist</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npointsall</span>)<span class="op">;</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">% Calculate via MC simul</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="va">randpoints</span> <span class="op">=</span> [<span class="va">randvalsx</span><span class="op">;</span> <span class="va">randvalsy</span>]<span class="op">&#39;;</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="va">meanpi</span> <span class="op">=</span> <span class="va">mean</span>(<span class="va">arrayfun</span>(<span class="op">@</span><span class="va">hit_or_miss</span><span class="op">,</span> <span class="va">randpoints</span>))<span class="op">;</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="va">pivals</span> <span class="op">=</span> <span class="va">arrayfun</span>(<span class="op">@</span><span class="va">hit_or_miss</span><span class="op">,</span> <span class="va">randpoints</span>)<span class="op">;</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="va">meanpilist</span> <span class="op">=</span> <span class="va">meanpi</span> <span class="op">*</span> <span class="va">ones</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npoints</span>)<span class="op">;</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="va">varpivals</span> <span class="op">=</span> <span class="va">arrayfun</span>(<span class="op">@</span><span class="va">hit_or_miss_var</span><span class="op">,</span> <span class="va">pivals</span><span class="op">,</span> <span class="va">meanpilist</span>)<span class="op">;</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="va">errorpi</span> <span class="op">=</span> <span class="va">sqrt</span>(<span class="va">sum</span>(<span class="va">varpivals</span>) <span class="op">/</span> (<span class="va">npoints</span> <span class="op">-</span> <span class="fl">1</span>)) <span class="op">/</span> <span class="va">sqrt</span>(<span class="va">npoints</span>)<span class="op">;</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">% π</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="va">exactI</span> <span class="op">=</span> <span class="va">pi</span><span class="op">/</span><span class="fl">4</span><span class="op">;</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="ss">&#39;meanpi = %f exact=%f \n error=%f errorExact=%f\n&#39;</span><span class="op">,</span> <span class="va">meanpi</span><span class="op">,</span> <span class="va">exactI</span><span class="op">,</span> <span class="va">errorpi</span><span class="op">,</span> <span class="va">exactI</span> <span class="op">-</span> <span class="va">meanpi</span>)<span class="op">;</span></span></code></pre></div></li>
+$$
+</p>
+</div>
+
+<div id="outline-container-orge8a22e2" class="outline-4">
+<h4 id="orge8a22e2"><span class="section-number-4">2.1.1.</span> Code (Matlab)</h4>
+<div class="outline-text-4" id="text-2-1-1">
+</div>
+<ol class="org-ol">
+<li><a id="org67b4ac4"></a>Functions<br />
+<div class="outline-text-5" id="text-2-1-1-1">
+<div class="org-src-container">
+<pre class="src src-matlab">function result = hit_or_miss(p)
+    x = p(1);
+    y = p(2);
+    if sqrt(x^2 + y^2) &gt; 1
+	result = 0;
+    else
+	result = 1;
+    end
+end
+
+function result = hit_or_miss_var(inp)
+    x = inp(1);
+    meanpi = inp(2);
+    result = (x - meanpi)^2;
+end
+</pre>
+</div>
+</div>
+</li>
+<li><a id="org5ab5aa2"></a>Simulation<br />
+<div class="outline-text-5" id="text-2-1-1-2">
+<div class="org-src-container">
+<pre class="src src-matlab">nb = 24;
+corrlen = 0;
+npoints = 2^nb;
+npointsall = 2^nb + corrlen;
+randvalsx = rand(1, npointsall);
+randvalsy = rand(1, npointsall);
+pivalslist = zeros(1, npointsall);
+
+% Calculate via MC simul
+randpoints = [randvalsx; randvalsy]';
+meanpi = mean(arrayfun(@hit_or_miss, randpoints));
+pivals = arrayfun(@hit_or_miss, randpoints);
+meanpilist = meanpi * ones(1, npoints);
+varpivals = arrayfun(@hit_or_miss_var, pivals, meanpilist);
+errorpi = sqrt(sum(varpivals) / (npoints - 1)) / sqrt(npoints);
+
+% π
+exactI = pi/4;
+fprintf('meanpi = %f exact=%f \n error=%f errorExact=%f\n', meanpi, exactI, errorpi, exactI - meanpi);
+
+</pre>
+</div>
+</div>
+</li>
 </ol>
-<h2 id="crude-monte-carlo">Crude monte-carlo</h2>
-<p>The crude method is the simplest and most inefficient monte-carlo
-algorithm. It simply involves generating uniformly distributed random
-points inside the unit square and counting the ratio of those points
-that lie within the quarter circle. This gives us the ratio of the area
-of the square and the circle. Since the are of the unit square is 1, the
-are of the circle can be deduced directly.</p>
-<p><img src="figures/crude_sampling.png" /></p>
-<p>The algorithm involves simply generating uniformly distributed set of
-points within the range (0-1). The estimator for the integral <span
-class="math inline">\(I\)</span> is given below.</p>
-<p><span class="math display">\[
+</div>
+</div>
+
+<div id="outline-container-org49c124c" class="outline-3">
+<h3 id="org49c124c"><span class="section-number-3">2.2.</span> Crude monte-carlo</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+The crude method is the simplest and most inefficient
+monte-carlo algorithm. It simply involves generating
+uniformly distributed random points inside the unit
+square and counting the ratio of those points that lie
+within the quarter circle. This gives us the ratio of
+the area of the square and the circle. Since the are
+of the unit square is 1, the are of the circle can be
+deduced directly.
+</p>
+
+
+<div id="orgf14da13" class="figure">
+<p><img src="figures/crude_sampling.png" alt="crude_sampling.png" />
+</p>
+</div>
+
+<p>
+The algorithm involves simply generating uniformly
+distributed set of points within the range (0-1). The estimator
+for the integral \(I\) is given below.
+</p>
+
+<p>
+$$
 \theta = \sum_i^N \frac{f(\xi_i)}{N}
-\]</span></p>
-<p>with f being the function given as shown below.</p>
-<p><span class="math display">\[
+$$
+</p>
+
+<p>
+with f being the function given as shown below.
+</p>
+
+<p>
+$$
 f(x) = \sqrt{1 - x^2}
-\]</span></p>
-<p>and <span class="math inline">\(\xi_i\)</span> is a uniform random
-number betwee (<span class="math inline">\(0,1\)</span>).</p>
-<h3 id="code-matlab-1">Code (Matlab)</h3>
-<ol type="1">
-<li><p>Functions</p>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">result</span> <span class="op">=</span> <span class="va">pi_curve</span>(<span class="va">x</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">result</span> <span class="op">=</span> <span class="va">sqrt</span>(<span class="fl">1.0</span> <span class="op">-</span> <span class="va">x</span><span class="op">^</span><span class="fl">2</span>)<span class="op">;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">result</span> <span class="op">=</span> <span class="va">pi_curve_var</span>(<span class="va">inp</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">x</span> <span class="op">=</span> <span class="va">inp</span>(<span class="fl">1</span>)<span class="op">;</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="va">meanpi</span> <span class="op">=</span> <span class="va">inp</span>(<span class="fl">2</span>)<span class="op">;</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="va">result</span> <span class="op">=</span> (<span class="va">x</span> <span class="op">-</span> <span class="va">meanpi</span>)<span class="op">^</span><span class="fl">2</span><span class="op">;</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div></li>
-<li><p>Simulation</p>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">nb</span> <span class="op">=</span> <span class="fl">24</span><span class="op">;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">corrlen</span> <span class="op">=</span> <span class="fl">0</span><span class="op">;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="va">npoints</span> <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">nb</span><span class="op">;</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="va">npointsall</span> <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">nb</span> <span class="op">+</span> <span class="va">corrlen</span><span class="op">;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="va">randvals</span> <span class="op">=</span> <span class="va">rand</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npointsall</span>)<span class="op">;</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="va">pivalslist</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npointsall</span>)<span class="op">;</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">% Calculate via MC simul</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="va">meanpi</span> <span class="op">=</span> <span class="va">mean</span>(<span class="va">arrayfun</span>(<span class="op">@</span><span class="va">pi_curve</span><span class="op">,</span> <span class="va">randvals</span>))<span class="op">;</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="va">pivals</span> <span class="op">=</span> <span class="va">arrayfun</span>(<span class="op">@</span><span class="va">pi_curve</span><span class="op">,</span> <span class="va">randvals</span>)<span class="op">;</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="va">meanpilist</span> <span class="op">=</span> <span class="va">meanpi</span> <span class="op">*</span> <span class="va">ones</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npoints</span>)<span class="op">;</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="va">varpivals</span> <span class="op">=</span> <span class="va">arrayfun</span>(<span class="op">@</span><span class="va">pi_curve_var</span><span class="op">,</span> <span class="va">pivals</span><span class="op">,</span> <span class="va">meanpilist</span>)<span class="op">;</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="va">errorpi</span> <span class="op">=</span> <span class="va">sqrt</span>(<span class="va">sum</span>(<span class="va">varpivals</span>) <span class="op">/</span> (<span class="va">npoints</span> <span class="op">-</span> <span class="fl">1</span>)) <span class="op">/</span> <span class="va">sqrt</span>(<span class="va">npoints</span>)<span class="op">;</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">% π</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="va">exactI</span> <span class="op">=</span> <span class="va">pi</span><span class="op">/</span><span class="fl">4</span><span class="op">;</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="ss">&#39;meanpi = %f exact=%f \n error=%f errorExact=%f\n&#39;</span><span class="op">,</span> <span class="va">meanpi</span><span class="op">,</span> <span class="va">exactI</span><span class="op">,</span> <span class="va">errorpi</span><span class="op">,</span> <span class="va">exactI</span> <span class="op">-</span> <span class="va">meanpi</span>)<span class="op">;</span></span></code></pre></div></li>
+$$
+</p>
+
+<p>
+and \(\xi_i\) is a uniform random number betwee (\(0,1\)).
+</p>
+</div>
+
+<div id="outline-container-org36dbf03" class="outline-4">
+<h4 id="org36dbf03"><span class="section-number-4">2.2.1.</span> Code (Matlab)</h4>
+<div class="outline-text-4" id="text-2-2-1">
+</div>
+<ol class="org-ol">
+<li><a id="org9faf09d"></a>Functions<br />
+<div class="outline-text-5" id="text-2-2-1-1">
+<div class="org-src-container">
+<pre class="src src-matlab">function result = pi_curve(x)
+    result = sqrt(1.0 - x^2);
+end
+
+function result = pi_curve_var(inp)
+    x = inp(1);
+    meanpi = inp(2);
+    result = (x - meanpi)^2;
+end
+
+</pre>
+</div>
+</div>
+</li>
+<li><a id="org2ca67e7"></a>Simulation<br />
+<div class="outline-text-5" id="text-2-2-1-2">
+<div class="org-src-container">
+<pre class="src src-matlab">nb = 24;
+corrlen = 0;
+npoints = 2^nb;
+npointsall = 2^nb + corrlen;
+randvals = rand(1, npointsall);
+pivalslist = zeros(1, npointsall);
+
+% Calculate via MC simul
+meanpi = mean(arrayfun(@pi_curve, randvals));
+pivals = arrayfun(@pi_curve, randvals);
+meanpilist = meanpi * ones(1, npoints);
+varpivals = arrayfun(@pi_curve_var, pivals, meanpilist);
+errorpi = sqrt(sum(varpivals) / (npoints - 1)) / sqrt(npoints);
+
+% π
+exactI = pi/4;
+fprintf('meanpi = %f exact=%f \n error=%f errorExact=%f\n', meanpi, exactI, errorpi, exactI - meanpi);
+
+</pre>
+</div>
+</div>
+</li>
 </ol>
-<h2 id="stratified-sampling">Stratified sampling</h2>
-<p>Stratified sampling involves breaking up the domain (i.e. 0 - 1) into
-strata and sampling inside individual strata. The estimator for <span
-class="math inline">\(\pi/4\)</span> is then given by the following.</p>
-<p><span class="math display">\[
-\theta = \sum_{j=1}^k \sum_1^{n_j} (\alpha_j -
-\alpha_{j-1})\frac{1}{n_j}f(\alpha_{j-1}+(\alpha_j -
-\alpha_{j-1})\xi_{ij})
-\]</span></p>
-<p>The variance can be smaller than that of crude monte-carlo if
-differences between local means is larger than the variance of <span
-class="math inline">\(f\)</span> within the stata.</p>
-<p><img src="figures/stratified_sampling.png" /></p>
-<h3 id="code-matlab-2">Code (Matlab)</h3>
-<ol type="1">
-<li><p>Functions</p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">inter_list</span> <span class="op">=</span> <span class="va">interval_gen</span>(<span class="va">nint</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">inter_list</span> <span class="op">=</span> <span class="va">linspace</span>(<span class="fl">0</span><span class="op">,</span> <span class="fl">1</span><span class="op">,</span> <span class="va">nint</span> <span class="op">+</span> <span class="fl">1</span>)<span class="op">;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">result</span> <span class="op">=</span> <span class="va">strat_rand</span>(<span class="va">x</span><span class="op">,</span> <span class="va">a</span><span class="op">,</span> <span class="va">b</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">result</span> <span class="op">=</span> <span class="va">a</span> <span class="op">+</span> <span class="va">x</span> <span class="op">*</span> (<span class="va">b</span> <span class="op">-</span> <span class="va">a</span>)<span class="op">;</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">strat_calc</span>(<span class="va">x</span><span class="op">,</span> <span class="va">list_npoints_inter</span><span class="op">,</span> <span class="va">list_sum_inter</span><span class="op">,</span> <span class="va">list_sum_inter2</span><span class="op">,</span> <span class="va">list_sum_inter_witha</span><span class="op">,</span> <span class="va">inter_list</span>)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="va">idinter</span> <span class="op">=</span> <span class="va">find</span>(<span class="va">inter_list</span> <span class="op">&lt;=</span> <span class="va">x</span><span class="op">,</span> <span class="fl">1</span><span class="op">,</span> <span class="ss">&#39;last&#39;</span>) <span class="op">-</span> <span class="fl">1</span><span class="op">;</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="va">list_npoints_inter</span>(<span class="va">idinter</span>) <span class="op">=</span> <span class="va">list_npoints_inter</span>(<span class="va">idinter</span>) <span class="op">+</span> <span class="fl">1</span><span class="op">;</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="va">list_sum_inter</span>(<span class="va">idinter</span>) <span class="op">=</span> <span class="va">list_sum_inter</span>(<span class="va">idinter</span>) <span class="op">+</span> <span class="va">pi_curve</span>(<span class="va">x</span>)<span class="op">;</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    δ<span class="va">a</span> <span class="op">=</span> <span class="va">inter_list</span>(<span class="va">idinter</span> <span class="op">+</span> <span class="fl">1</span>) <span class="op">-</span> <span class="va">inter_list</span>(<span class="va">idinter</span>)<span class="op">;</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="va">list_sum_inter_witha</span>(<span class="va">idinter</span>) <span class="op">=</span> <span class="va">list_sum_inter_witha</span>(<span class="va">idinter</span>) <span class="op">+</span> δ<span class="va">a</span> <span class="op">*</span> <span class="va">pi_curve</span>(<span class="va">x</span>)<span class="op">;</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="va">list_sum_inter2</span>(<span class="va">idinter</span>) <span class="op">=</span> <span class="va">list_sum_inter2</span>(<span class="va">idinter</span>) <span class="op">+</span> <span class="va">pi_curve</span>(<span class="va">x</span>) <span class="op">*</span> <span class="va">pi_curve</span>(<span class="va">x</span>)<span class="op">;</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">strat_rand_calc</span>(<span class="va">x</span><span class="op">,</span> <span class="va">a</span><span class="op">,</span> <span class="va">b</span><span class="op">,</span> <span class="va">list_npoints_inter</span><span class="op">,</span> <span class="va">list_sum_inter</span><span class="op">,</span> <span class="va">list_sum_inter2</span><span class="op">,</span> <span class="va">list_sum_inter_witha</span><span class="op">,</span> <span class="va">inter_list</span>)</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="va">x</span> <span class="op">=</span> <span class="va">a</span> <span class="op">+</span> <span class="va">x</span> <span class="op">*</span> (<span class="va">b</span> <span class="op">-</span> <span class="va">a</span>)<span class="op">;</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="va">idinter</span> <span class="op">=</span> <span class="va">find</span>(<span class="va">inter_list</span> <span class="op">&lt;=</span> <span class="va">x</span><span class="op">,</span> <span class="fl">1</span><span class="op">,</span> <span class="ss">&#39;last&#39;</span>) <span class="op">-</span> <span class="fl">1</span><span class="op">;</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="va">list_npoints_inter</span>(<span class="va">idinter</span>) <span class="op">=</span> <span class="va">list_npoints_inter</span>(<span class="va">idinter</span>) <span class="op">+</span> <span class="fl">1</span><span class="op">;</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="va">list_sum_inter</span>(<span class="va">idinter</span>) <span class="op">=</span> <span class="va">list_sum_inter</span>(<span class="va">idinter</span>) <span class="op">+</span> <span class="va">pi_curve</span>(<span class="va">x</span>)<span class="op">;</span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    δ<span class="va">a</span> <span class="op">=</span> <span class="va">inter_list</span>(<span class="va">idinter</span> <span class="op">+</span> <span class="fl">1</span>) <span class="op">-</span> <span class="va">inter_list</span>(<span class="va">idinter</span>)<span class="op">;</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="va">list_sum_inter_witha</span>(<span class="va">idinter</span>) <span class="op">=</span> <span class="va">list_sum_inter_witha</span>(<span class="va">idinter</span>) <span class="op">+</span> δ<span class="va">a</span> <span class="op">*</span> <span class="va">pi_curve</span>(<span class="va">x</span>)<span class="op">;</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="va">list_sum_inter2</span>(<span class="va">idinter</span>) <span class="op">=</span> <span class="va">list_sum_inter2</span>(<span class="va">idinter</span>) <span class="op">+</span> <span class="va">pi_curve</span>(<span class="va">x</span>) <span class="op">*</span> <span class="va">pi_curve</span>(<span class="va">x</span>)<span class="op">;</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div></li>
-<li><p>Simulation</p>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">nb</span> <span class="op">=</span> <span class="fl">10</span><span class="op">;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="va">npint</span> <span class="op">=</span> <span class="fl">2</span><span class="op">;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="va">nint</span> <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">npint</span><span class="op">;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="va">corrlen</span> <span class="op">=</span> <span class="fl">0</span><span class="op">;</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="va">npoints</span> <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">nb</span><span class="op">;</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="va">npointsall</span> <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">nb</span><span class="op">;</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="va">randvals</span> <span class="op">=</span> <span class="va">rand</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npointsall</span>)<span class="op">;</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="ss">&#39;%d\n&#39;</span><span class="op">,</span> <span class="va">npointsall</span>)<span class="op">;</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="va">list_npoints_inter</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">nint</span>)<span class="op">;</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="va">list_sum_inter</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">nint</span>)<span class="op">;</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="va">list_sum_inter2</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">nint</span>)<span class="op">;</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="va">list_sum_inter_witha</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">nint</span>)<span class="op">;</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="va">inter_list</span> <span class="op">=</span> <span class="va">interval_gen</span>(<span class="va">nint</span>)<span class="op">;</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="va">list_mean_inter</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">nint</span>)<span class="op">;</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="va">i</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">nint</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="va">step</span> <span class="op">=</span> <span class="va">npointsall</span> <span class="op">/</span> <span class="fl">2</span><span class="op">^</span><span class="va">npint</span><span class="op">;</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="va">a</span> <span class="op">=</span> <span class="va">inter_list</span>(<span class="va">i</span>)<span class="op">;</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="va">b</span> <span class="op">=</span> <span class="va">inter_list</span>(<span class="va">i</span><span class="op">+</span><span class="fl">1</span>)<span class="op">;</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="va">idx</span> <span class="op">=</span> (<span class="va">step</span><span class="op">*</span>(<span class="va">i</span><span class="op">-</span><span class="fl">1</span>)<span class="op">+</span><span class="fl">1</span>)<span class="op">:</span>(<span class="va">step</span><span class="op">*</span><span class="va">i</span>)<span class="op">;</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">for</span> <span class="va">j</span> <span class="op">=</span> <span class="va">idx</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>        <span class="va">strat_rand_calc</span>(<span class="va">randvals</span>(<span class="va">j</span>)<span class="op">,</span> <span class="va">a</span><span class="op">,</span> <span class="va">b</span><span class="op">,</span> <span class="va">list_npoints_inter</span><span class="op">,</span> <span class="va">list_sum_inter</span><span class="op">,</span> <span class="va">list_sum_inter2</span><span class="op">,</span> <span class="va">list_sum_inter_witha</span><span class="op">,</span> <span class="va">inter_list</span>)<span class="op">;</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">end</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="va">list_mean_inter</span> <span class="op">=</span> <span class="va">list_sum_inter_witha</span> <span class="op">./</span> <span class="va">list_npoints_inter</span><span class="op">;</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="va">meanpi</span> <span class="op">=</span> <span class="va">sum</span>(<span class="va">list_mean_inter</span>)<span class="op">;</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="va">varpi</span> <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="va">it</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">nint</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    δ<span class="va">a</span> <span class="op">=</span> <span class="va">inter_list</span>(<span class="va">it</span><span class="op">+</span><span class="fl">1</span>) <span class="op">-</span> <span class="va">inter_list</span>(<span class="va">it</span>)<span class="op">;</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    <span class="va">nit</span> <span class="op">=</span> <span class="va">list_npoints_inter</span>(<span class="va">it</span>)<span class="op">;</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    <span class="va">varpi</span> <span class="op">=</span> <span class="va">varpi</span> <span class="op">+</span> δ<span class="va">a</span><span class="op">^</span><span class="fl">2</span> <span class="op">*</span> (<span class="va">list_sum_inter2</span>(<span class="va">it</span>) <span class="op">-</span> <span class="va">nit</span> <span class="op">*</span> <span class="va">list_mean_inter</span>(<span class="va">it</span>)<span class="op">^</span><span class="fl">2</span>) <span class="op">/</span> (<span class="va">nit</span> <span class="op">*</span> (<span class="va">nit</span> <span class="op">-</span> <span class="fl">1</span>))<span class="op">;</span></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="va">errorpi</span> <span class="op">=</span> <span class="va">sqrt</span>(<span class="va">varpi</span>)<span class="op">;</span></span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="va">exactI</span> <span class="op">=</span> <span class="fl">0.4180232931306735</span><span class="op">;</span></span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="va">exactI</span> <span class="op">=</span> <span class="va">pi</span><span class="op">/</span><span class="fl">4</span><span class="op">;</span></span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="ss">&#39;meanpi = %f exact=%f \n error=%f errorExact=%f\n&#39;</span><span class="op">,</span> <span class="va">meanpi</span><span class="op">,</span> <span class="va">exactI</span><span class="op">,</span> <span class="va">errorpi</span><span class="op">,</span> <span class="va">exactI</span> <span class="op">-</span> <span class="va">meanpi</span>)<span class="op">;</span></span></code></pre></div></li>
+</div>
+</div>
+
+
+<div id="outline-container-orgae739da" class="outline-3">
+<h3 id="orgae739da"><span class="section-number-3">2.3.</span> Stratified sampling</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Stratified sampling involves breaking up the domain (i.e. 0 - 1)
+into strata and sampling inside individual strata. The estimator
+for \(\pi/4\) is then given by the following.
+</p>
+
+<p>
+$$
+\theta = \sum_{j=1}^k \sum_1^{n_j} (\alpha_j - \alpha_{j-1})\frac{1}{n_j}f(\alpha_{j-1}+(\alpha_j - \alpha_{j-1})\xi_{ij})
+$$
+</p>
+
+<p>
+The variance can be smaller than that of crude monte-carlo if
+differences between local means is larger than the variance of \(f\)
+within the stata.
+</p>
+
+
+
+<div id="org8e4cc84" class="figure">
+<p><img src="figures/stratified_sampling.png" alt="stratified_sampling.png" />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8082986" class="outline-4">
+<h4 id="org8082986"><span class="section-number-4">2.3.1.</span> Code (Matlab)</h4>
+<div class="outline-text-4" id="text-2-3-1">
+</div>
+<ol class="org-ol">
+<li><a id="org81d2367"></a>Functions<br />
+<div class="outline-text-5" id="text-2-3-1-1">
+<div class="org-src-container">
+<pre class="src src-matlab">function inter_list = interval_gen(nint)
+    inter_list = linspace(0, 1, nint + 1);
+end
+
+function result = strat_rand(x, a, b)
+    result = a + x * (b - a);
+end
+
+function strat_calc(x, list_npoints_inter, list_sum_inter, list_sum_inter2, list_sum_inter_witha, inter_list)
+    idinter = find(inter_list &lt;= x, 1, 'last') - 1;
+    list_npoints_inter(idinter) = list_npoints_inter(idinter) + 1;
+    list_sum_inter(idinter) = list_sum_inter(idinter) + pi_curve(x);
+    δa = inter_list(idinter + 1) - inter_list(idinter);
+    list_sum_inter_witha(idinter) = list_sum_inter_witha(idinter) + δa * pi_curve(x);
+    list_sum_inter2(idinter) = list_sum_inter2(idinter) + pi_curve(x) * pi_curve(x);
+end
+
+function strat_rand_calc(x, a, b, list_npoints_inter, list_sum_inter, list_sum_inter2, list_sum_inter_witha, inter_list)
+    x = a + x * (b - a);
+    idinter = find(inter_list &lt;= x, 1, 'last') - 1;
+    list_npoints_inter(idinter) = list_npoints_inter(idinter) + 1;
+    list_sum_inter(idinter) = list_sum_inter(idinter) + pi_curve(x);
+    δa = inter_list(idinter + 1) - inter_list(idinter);
+    list_sum_inter_witha(idinter) = list_sum_inter_witha(idinter) + δa * pi_curve(x);
+    list_sum_inter2(idinter) = list_sum_inter2(idinter) + pi_curve(x) * pi_curve(x);
+end
+
+</pre>
+</div>
+</div>
+</li>
+<li><a id="orgf3b146e"></a>Simulation<br />
+<div class="outline-text-5" id="text-2-3-1-2">
+<div class="org-src-container">
+<pre class="src src-matlab">nb = 10;
+npint = 2;
+nint = 2^npint;
+corrlen = 0;
+npoints = 2^nb;
+npointsall = 2^nb;
+randvals = rand(1, npointsall);
+fprintf('%d\n', npointsall);
+
+list_npoints_inter = zeros(1, nint);
+list_sum_inter = zeros(1, nint);
+list_sum_inter2 = zeros(1, nint);
+list_sum_inter_witha = zeros(1, nint);
+inter_list = interval_gen(nint);
+list_mean_inter = zeros(1, nint);
+
+for i = 1:nint
+    step = npointsall / 2^npint;
+    a = inter_list(i);
+    b = inter_list(i+1);
+    idx = (step*(i-1)+1):(step*i);
+    for j = idx
+	strat_rand_calc(randvals(j), a, b, list_npoints_inter, list_sum_inter, list_sum_inter2, list_sum_inter_witha, inter_list);
+    end
+end
+
+list_mean_inter = list_sum_inter_witha ./ list_npoints_inter;
+
+meanpi = sum(list_mean_inter);
+varpi = 0.0;
+for it = 1:nint
+    δa = inter_list(it+1) - inter_list(it);
+    nit = list_npoints_inter(it);
+    varpi = varpi + δa^2 * (list_sum_inter2(it) - nit * list_mean_inter(it)^2) / (nit * (nit - 1));
+end
+
+errorpi = sqrt(varpi);
+exactI = 0.4180232931306735;
+exactI = pi/4;
+fprintf('meanpi = %f exact=%f \n error=%f errorExact=%f\n', meanpi, exactI, errorpi, exactI - meanpi);
+
+</pre>
+</div>
+</div>
+</li>
 </ol>
-<h2 id="importance-sampling">Importance sampling</h2>
-<p>The natural next step following stratified sampling is that of
-importance sampling. In the previous method, we chose the strata
-arbitrarily, i.e. by inspection of the function to integrate. This was
-followed by a uniform sampling of points inside each strata. The idea is
-to break the domain into regions which need to be sampled with more
-points as opposed to domains where the function is quasi horizontal
-(i.e. low variance). The more natural way to do this is to adapt the
-choice of points in a more flexible manner. This is the idea behind
-importance sampling where we define a custom distribution (<span
-class="math inline">\(g(x)\)</span>) which is very close to the original
-function (<span class="math inline">\(f(x)\)</span>) that we wish to
-integrate. The main constarint on the distribution is that it needs to
-be easy to sample from.</p>
-<p><span class="math display">\[
-\theta = \int_0^1 f(x)\ dx = \int_0^1 \frac{f(x)}{g(x)} g{x}\ dx =
-\int_0^1 \frac{f(x)}{g(x)} dG(x)
-\]</span></p>
-<p>here, <span class="math inline">\(dG(x)\)</span> is the measure, i.e.
-the sampling distribution. Note that the distribution <span
-class="math inline">\(g(x)\)</span> must be normalized.</p>
-<p><span class="math display">\[
+</div>
+</div>
+
+<div id="outline-container-orgb2836bb" class="outline-3">
+<h3 id="orgb2836bb"><span class="section-number-3">2.4.</span> Importance sampling</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+The natural next step following stratified sampling is that of importance sampling.
+In the previous method, we chose the strata arbitrarily, i.e. by inspection of the
+function to integrate. This was followed by a uniform sampling of points inside
+each strata. The idea is to break the domain into regions which need to be sampled
+with more points as opposed to domains where the function is quasi horizontal (i.e. low variance).
+The more natural way to do this is to adapt the choice of points in a more flexible manner.
+This is the idea behind importance sampling where we define a custom distribution (\(g(x)\)) which
+is very close to the original function (\(f(x)\)) that we wish to integrate. The main constarint
+on the distribution is that it needs to be easy to sample from.
+</p>
+
+
+<p>
+$$
+\theta = \int_0^1 f(x)\ dx = \int_0^1 \frac{f(x)}{g(x)} g{x}\ dx = \int_0^1 \frac{f(x)}{g(x)} dG(x)
+$$
+</p>
+
+<p>
+here, \(dG(x)\) is the measure, i.e. the sampling distribution. Note that the
+distribution \(g(x)\) must be normalized.
+</p>
+
+<p>
+$$
 \int_0^1 g(x)dx = 1
-\]</span></p>
-<p>Invting a distribution,</p>
-<h3 id="code-matlab-3">Code (Matlab)</h3>
-<ol type="1">
-<li><p>Function</p>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">result</span> <span class="op">=</span> <span class="va">gx</span>(<span class="va">x</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">result</span> <span class="op">=</span> <span class="op">-</span><span class="fl">2</span> <span class="op">*</span> <span class="va">x</span><span class="op">;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">result</span> <span class="op">=</span> <span class="va">foverg</span>(<span class="va">x</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">result</span> <span class="op">=</span> <span class="va">pi_curve</span>(<span class="va">x</span>) <span class="op">/</span> <span class="va">gx</span>(<span class="va">x</span>)<span class="op">;</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">result</span> <span class="op">=</span> <span class="va">foverg_var</span>(<span class="va">x</span><span class="op">,</span> <span class="va">meanpi</span>)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="va">result</span> <span class="op">=</span> (<span class="va">x</span> <span class="op">-</span> <span class="va">meanpi</span>)<span class="op">^</span><span class="fl">2</span><span class="op">;</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">result</span> <span class="op">=</span> <span class="va">cdfm1</span>(<span class="va">z</span>)</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="va">y</span> <span class="op">=</span> <span class="op">-</span><span class="va">sqrt</span>(<span class="fl">2</span> <span class="op">*</span> <span class="va">z</span>) <span class="op">/</span> <span class="va">sqrt</span>(<span class="fl">2</span>)<span class="op">;</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="va">result</span> <span class="op">=</span> <span class="va">y</span><span class="op">;</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div></li>
-<li><p>Simulation</p>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">nb</span> <span class="op">=</span> <span class="fl">22</span><span class="op">;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="va">corrlen</span> <span class="op">=</span> <span class="fl">0</span><span class="op">;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="va">npoints</span> <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">nb</span><span class="op">;</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="va">npointsall</span> <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="va">nb</span> <span class="op">+</span> <span class="va">corrlen</span><span class="op">;</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="va">randvals</span> <span class="op">=</span> <span class="va">arrayfun</span>(<span class="op">@</span><span class="va">cdfm1</span><span class="op">,</span> <span class="va">rand</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npointsall</span>))<span class="op">;</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">% Calculate via MC simul</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="va">pivals</span> <span class="op">=</span> <span class="va">arrayfun</span>(<span class="op">@</span><span class="va">foverg</span><span class="op">,</span> <span class="va">randvals</span>)<span class="op">;</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="va">meanpi</span> <span class="op">=</span> <span class="va">mean</span>(<span class="va">pivals</span>)<span class="op">;</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="va">meanpilist</span> <span class="op">=</span> <span class="va">meanpi</span> <span class="op">*</span> <span class="va">ones</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">npoints</span>)<span class="op">;</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="va">varpivals</span> <span class="op">=</span> <span class="va">arrayfun</span>(<span class="op">@</span><span class="va">pi_curve_var</span><span class="op">,</span> <span class="va">pivals</span><span class="op">,</span> <span class="va">meanpilist</span>)<span class="op">;</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="va">errorpi</span> <span class="op">=</span> <span class="va">sqrt</span>(<span class="va">sum</span>(<span class="va">varpivals</span>) <span class="op">/</span> (<span class="va">npoints</span> <span class="op">-</span> <span class="fl">1</span>)) <span class="op">/</span> <span class="va">sqrt</span>(<span class="va">npoints</span>)<span class="op">;</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="va">exactI</span> <span class="op">=</span> <span class="va">pi</span><span class="op">/</span><span class="fl">4</span><span class="op">;</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="ss">&#39;meanpi = %f exact=%f \n error=%f errorExact=%f\n&#39;</span><span class="op">,</span> <span class="va">meanpi</span><span class="op">,</span> <span class="va">exactI</span><span class="op">,</span> <span class="va">errorpi</span><span class="op">,</span> <span class="va">exactI</span> <span class="op">-</span> <span class="va">meanpi</span>)<span class="op">;</span></span></code></pre></div></li>
+$$
+</p>
+
+<p>
+Invting a distribution,
+</p>
+</div>
+
+<div id="outline-container-org2dad900" class="outline-4">
+<h4 id="org2dad900"><span class="section-number-4">2.4.1.</span> Code (Matlab)</h4>
+<div class="outline-text-4" id="text-2-4-1">
+</div>
+<ol class="org-ol">
+<li><a id="orgbdf59d7"></a>Function<br />
+<div class="outline-text-5" id="text-2-4-1-1">
+<div class="org-src-container">
+<pre class="src src-matlab">function result = gx(x)
+    result = -2 * x;
+end
+
+function result = foverg(x)
+    result = pi_curve(x) / gx(x);
+end
+
+function result = foverg_var(x, meanpi)
+    result = (x - meanpi)^2;
+end
+
+function result = cdfm1(z)
+    y = -sqrt(2 * z) / sqrt(2);
+    result = y;
+end
+</pre>
+</div>
+</div>
+</li>
+<li><a id="org347b021"></a>Simulation<br />
+<div class="outline-text-5" id="text-2-4-1-2">
+<div class="org-src-container">
+<pre class="src src-matlab">nb = 22;
+corrlen = 0;
+npoints = 2^nb;
+npointsall = 2^nb + corrlen;
+randvals = arrayfun(@cdfm1, rand(1, npointsall));
+
+% Calculate via MC simul
+pivals = arrayfun(@foverg, randvals);
+meanpi = mean(pivals);
+meanpilist = meanpi * ones(1, npoints);
+varpivals = arrayfun(@pi_curve_var, pivals, meanpilist);
+errorpi = sqrt(sum(varpivals) / (npoints - 1)) / sqrt(npoints);
+exactI = pi/4;
+
+fprintf('meanpi = %f exact=%f \n error=%f errorExact=%f\n', meanpi, exactI, errorpi, exactI - meanpi);
+
+</pre>
+</div>
+</div>
+</li>
 </ol>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2023-08-19 sam. 00:00</p>
+<p class="author">Author: Vijay Gopal Chilkuri</p>
+<p class="date">Created: 2023-09-06 mer. 12:09</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
 </body>
 </html>
